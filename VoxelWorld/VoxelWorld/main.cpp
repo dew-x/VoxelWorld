@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <fstream>
 #include <string>
+#include <time.h>
 
 std::string get_file_contents(std::string fname) {
 	std::ifstream file(fname);
@@ -25,20 +26,6 @@ std::string get_file_contents(std::string fname) {
 	file.close();
 	return fileContents;
 }
-
-// Shader sources
-const GLchar* vertexSource =
-"#version 150 core\n"
-"in vec2 position;"
-"void main() {"
-"   gl_Position = vec4(position, 0.0, 1.0);"
-"}";
-const GLchar* fragmentSource =
-"#version 150 core\n"
-"out vec4 outColor;"
-"void main() {"
-"   outColor = vec4(1.0, 1.0, 1.0, 1.0);"
-"}";
 
 int main(int argc, char *argv[])
 {
@@ -60,22 +47,36 @@ int main(int argc, char *argv[])
 	// Create a Vertex Buffer Object and copy the vertex data to it
 	GLuint vbo;
 	glGenBuffers(1, &vbo);
+	GLuint ebo;
+	glGenBuffers(1, &ebo);
 
-	GLfloat vertices[] = {
-		0.0f, 0.5f,
-		0.5f, -0.5f,
-		-0.5f, -0.5f
+	float vertices[] = {
+		-0.5f, 0.5f, 1.0f, 0.0f, 0.0f, // Top-left
+		0.5f, 0.5f, 0.0f, 1.0f, 0.0f, // Top-right
+		0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
+		-0.5f, -0.5f, 1.0f, 1.0f, 1.0f  // Bottom-left
+	};
+
+	GLuint elements[] = {
+		0, 1, 2,
+		2, 3, 0
 	};
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(elements), elements, GL_STATIC_DRAW);
 	// shadders
 	// Create and compile the vertex shader
+	std::string vContent = get_file_contents("./shaders/vertexShader.txt");
+	const char * vertexSource = vContent.c_str();
 	GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexSource, NULL);
 	glCompileShader(vertexShader);
 
 	// Create and compile the fragment shader
+	std::string fContent = get_file_contents("./shaders/fragmentShader.txt");
+	const char * fragmentSource = fContent.c_str();
 	GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentSource, NULL);
 	glCompileShader(fragmentShader);
@@ -88,12 +89,18 @@ int main(int argc, char *argv[])
 	glLinkProgram(shaderProgram);
 	glUseProgram(shaderProgram);
 
-	// Specify the layout of the vertex data
 	GLint posAttrib = glGetAttribLocation(shaderProgram, "position");
 	glEnableVertexAttribArray(posAttrib);
-	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
+	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE,
+		5 * sizeof(float), 0);
+
+	GLint colAttrib = glGetAttribLocation(shaderProgram, "color");
+	glEnableVertexAttribArray(colAttrib);
+	glVertexAttribPointer(colAttrib, 3, GL_FLOAT, GL_FALSE,
+		5 * sizeof(float), (void*)(2 * sizeof(float)));
 	while (true)
 	{
+		//glUniform3f(uniColor, (sin(SDL_GetTicks() / 200.0f) + 1.0f) / 2.0f, 0.0f, 0.0f);
 		if (SDL_PollEvent(&windowEvent))
 		{
 			if (windowEvent.type == SDL_QUIT) break;
@@ -105,7 +112,8 @@ int main(int argc, char *argv[])
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		// Draw a triangle from the 3 vertices
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		//glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
 		SDL_GL_SwapWindow(window);
 	}
