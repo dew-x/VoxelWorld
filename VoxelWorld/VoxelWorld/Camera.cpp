@@ -177,10 +177,7 @@ void COpenGLView::OnMouseWheel(short zDelta)
 	Camera.OnMouseWheel(zDelta);
 }
 
-void COpenGLView::OnPaint()
-{
-	...
-
+void COpenGLView::OnPaint(){
 		BYTE Keys = 0x00;
 
 	if (GetKeyState('W') & 0x80) Keys |= 0x01;
@@ -197,8 +194,6 @@ void COpenGLView::OnPaint()
 	{
 		Camera.Move(Camera.OnKeys(Keys, FrameTime));
 	}
-
-	...
 }
 
 void COpenGLView::OnRButtonDown(int X, int Y)
@@ -207,14 +202,9 @@ void COpenGLView::OnRButtonDown(int X, int Y)
 	LastY = Y;
 }
 
-...
-
 LRESULT CALLBACK WndProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 {
-	switch (uiMsg)
-	{
-		...
-
+	switch (uiMsg){
 	case WM_MOUSEMOVE:
 		OpenGLView.OnMouseMove(LOWORD(lParam), HIWORD(lParam));
 		break;
@@ -223,8 +213,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 		OpenGLView.OnMouseWheel(HIWORD(wParam));
 		break;
 
-		...
-
 	case WM_PAINT:
 		OpenGLView.OnPaint();
 		break;
@@ -232,10 +220,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT uiMsg, WPARAM wParam, LPARAM lParam)
 	case WM_RBUTTONDOWN:
 		OpenGLView.OnRButtonDown(LOWORD(lParam), HIWORD(lParam));
 		break;
-
-		...
 	}
-
-	...
 }
 */
