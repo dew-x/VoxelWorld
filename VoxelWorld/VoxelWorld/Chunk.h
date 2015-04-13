@@ -4,7 +4,8 @@
 #include <math.h>
 #include <set>
 #include <cstdint>
-
+#include <vector>
+#include <glm/glm.hpp>
 /*
 CLass to handle the data of a small piece of the map, have linkts to its neigboors
 
@@ -34,6 +35,7 @@ public:
 	//void spawnNeighbors(SDL_Rect window, ItemMap*); // create neighbords if i need
 	void resetCalls(); // return booleans isCalled as false
 	int getMapValue(int x, int y); // gets the tile value of the positions x,y relative to current chunk
+	void generate(float*, unsigned*, std::vector<glm::vec3>*, int*);
 private:
 };
 

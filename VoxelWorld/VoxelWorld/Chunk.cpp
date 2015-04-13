@@ -4,10 +4,10 @@
 parameters: x position / y position / list set if exist this chunk
 create a chunk, asign x and y position, create a matrix pointer with chunk_size and put boolean isCalled false. put this chunk in set exists*/
 
-#define coord(x,y,z) 256*(x*CHUNK_SIZE+y)+z
 #define CHUNK_SIZE 16
 #define CHUNK_SIZE_DEPTH 256
 #define TILE_MAX 8
+#define coord(x,y,z) CHUNK_SIZE_DEPTH*(x*CHUNK_SIZE+y)+z
 
 Chunk::Chunk(int x, int y, std::set<unsigned>* exists){
 	//save x and y cordinates
@@ -187,3 +187,29 @@ void Chunk::resetCalls() {
 	}
 	return ret;
 }*/
+
+//arreglar i fer amb un push 
+void Chunk::generate(float* vertexs, unsigned* elements, std::vector<glm::vec3>* vertexArray, int* elementsArray){
+	//calc the num of elements will need generated
+	int element = 0;
+	for (int i = 0; i < CHUNK_SIZE; i++){
+		for (int j = 0; j < CHUNK_SIZE; j++){
+			for (int k = 0; k < CHUNK_SIZE_DEPTH; k++){
+				if (matrix[coord(i,j,k)] == 1) element++;
+			}
+		}
+	}
+	//create a new array of vertexs with new size
+	vertexArray = new std::vector<glm::vec3>[element * 16];
+	elementsArray = new int[6 * element];
+	for (int i = 0; i < CHUNK_SIZE; i++){
+		for (int j = 0; j < CHUNK_SIZE; j++){
+			for (int k = 0; k < CHUNK_SIZE_DEPTH; k++){
+				if (matrix[coord(i, j, k)] == 1){
+					
+				}
+			}
+		}
+	}
+}
+
