@@ -39,6 +39,8 @@ int main(int argc, char *argv[])
 	// Initialize GLEW
 	glewExperimental = GL_TRUE;
 	glewInit();
+	// Setup OpenGL options
+	glEnable(GL_DEPTH_TEST);
 	// Create Vertex Array Object
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
