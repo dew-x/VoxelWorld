@@ -45,19 +45,30 @@ void World::generator(std::vector<float> &vbo){
 			xp = i / (depth*height);
 			yp = (i / depth) % height;
 			zp = i%depth;
-			//comprovate if neightboards are inside of the world
+			//comprovate if neightboards are inside of the world and if don't exists, call createVertex()
 			if (!inside(xp - 1, yp, zp) || isEmpty(xp - 1, yp, zp)){
-				
+				//left face
+				calcVertex(xp, yp, zp, vbo, glm::vec3(0, 1, 1));
+
 			}if (!inside(xp + 1, yp, zp) || isEmpty(xp + 1, yp, zp)){
+				//right face
+				calcVertex(xp, yp, zp, vbo, glm::vec3(0, -1, -1));
 
 			}if (!inside(xp , yp-1, zp) || isEmpty(xp , yp-1, zp)){
+				//front face
+				calcVertex(xp, yp, zp, vbo, glm::vec3(1, 0, 1));
 
 			}if (!inside(xp , yp+1, zp) || isEmpty(xp, yp+1, zp)){
+				//back face
+				calcVertex(xp, yp, zp, vbo, glm::vec3(-1, 0, -1));
 
 			}if (!inside(xp, yp, zp-1) || isEmpty(xp, yp, zp-1)){
+				//bot face
+				calcVertex(xp, yp, zp, vbo, glm::vec3(1, 1, 0));
 
 			}if (!inside(xp, yp, zp) || isEmpty(xp, yp, zp+1)){
-
+				//top face
+				calcVertex(xp, yp, zp, vbo, glm::vec3(-1, -1, 0));
 			}
 			
 		}
@@ -72,12 +83,151 @@ void World::insertVertex(unsigned x, unsigned y, unsigned z, std::vector<float> 
 
 }
 
+//create de four vertex of the face
+//parameters: x ,y ,z positions; vertex buffer object; vector distance 
 void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d){
 	if (d.x == d.z){
-		
+		//push first vertex
+		// push x, y ,z
+		vbo.push_back(x);
+		vbo.push_back(y);
+		vbo.push_back(z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+
+		//push second vertex
+		// push x, y ,z
+		vbo.push_back(x);
+		vbo.push_back(y);
+		vbo.push_back(z + d.z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+
+		//push third vertex
+		// push x, y ,z
+		vbo.push_back(x + d.x);
+		vbo.push_back(y);
+		vbo.push_back(z + d.z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+		//push fourth vertex 
+		// push x, y ,z
+		vbo.push_back(x + d.x);
+		vbo.push_back(y);
+		vbo.push_back(z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+
 	}else if (d.y == d.z){
-	
+		//push first vertex
+		// push x, y ,z
+		vbo.push_back(x);
+		vbo.push_back(y);
+		vbo.push_back(z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+
+		//push second vertex
+		// push x, y ,z
+		vbo.push_back(x);
+		vbo.push_back(y + d.y);
+		vbo.push_back(z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+
+		//push third vertex
+		// push x, y ,z
+		vbo.push_back(x);
+		vbo.push_back(y + d.y);
+		vbo.push_back(z + d.z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+		//push fourth vertex 
+		// push x, y ,z
+		vbo.push_back(x);
+		vbo.push_back(y);
+		vbo.push_back(z + d.z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+
 	}else{
-	
+		//push first vertex
+		// push x, y ,z
+		vbo.push_back(x);
+		vbo.push_back(y);
+		vbo.push_back(z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+
+		//push second vertex
+		// push x, y ,z
+		vbo.push_back(x +d.x);
+		vbo.push_back(y);
+		vbo.push_back(z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+
+		//push third vertex
+		// push x, y ,z
+		vbo.push_back(x + d.x);
+		vbo.push_back(y + d.y);
+		vbo.push_back(z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
+		//push fourth vertex 
+		// push x, y ,z
+		vbo.push_back(x);
+		vbo.push_back(y + d.y);
+		vbo.push_back(z);
+		//push id ?
+		//vbo.push_back();
+		//push color R G B
+		vbo.push_back(255.0);
+		vbo.push_back(0.0);
+		vbo.push_back(0.0);
 	}
 }
