@@ -87,15 +87,16 @@ void World::insertVertex(unsigned x, unsigned y, unsigned z, std::vector<float> 
 //parameters: x ,y ,z positions; vertex buffer object; vector distance 
 void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d){
 	if (d.x == d.z){
+		float id = vbo.size();
 		//push first vertex
 		// push x, y ,z
 		vbo.push_back(x);
 		vbo.push_back(y);
 		vbo.push_back(z);
-		//push id ?
-		//vbo.push_back();
+		//push id 
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 
@@ -104,10 +105,10 @@ void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d
 		vbo.push_back(x);
 		vbo.push_back(y);
 		vbo.push_back(z + d.z);
-		//push id ?
-		//vbo.push_back();
+		//push id 
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 
@@ -116,10 +117,10 @@ void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d
 		vbo.push_back(x + d.x);
 		vbo.push_back(y);
 		vbo.push_back(z + d.z);
-		//push id ?
-		//vbo.push_back();
+		//push id 
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 		//push fourth vertex 
@@ -127,23 +128,24 @@ void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d
 		vbo.push_back(x + d.x);
 		vbo.push_back(y);
 		vbo.push_back(z);
-		//push id ?
-		//vbo.push_back();
+		//push id 
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 
 	}else if (d.y == d.z){
+		float id = vbo.size();
 		//push first vertex
 		// push x, y ,z
 		vbo.push_back(x);
 		vbo.push_back(y);
 		vbo.push_back(z);
 		//push id ?
-		//vbo.push_back();
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 
@@ -153,9 +155,9 @@ void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d
 		vbo.push_back(y + d.y);
 		vbo.push_back(z);
 		//push id ?
-		//vbo.push_back();
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 
@@ -165,9 +167,9 @@ void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d
 		vbo.push_back(y + d.y);
 		vbo.push_back(z + d.z);
 		//push id ?
-		//vbo.push_back();
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 		//push fourth vertex 
@@ -176,22 +178,23 @@ void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d
 		vbo.push_back(y);
 		vbo.push_back(z + d.z);
 		//push id ?
-		//vbo.push_back();
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 
 	}else{
+		float id = vbo.size();
 		//push first vertex
 		// push x, y ,z
 		vbo.push_back(x);
 		vbo.push_back(y);
 		vbo.push_back(z);
 		//push id ?
-		//vbo.push_back();
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 
@@ -201,9 +204,9 @@ void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d
 		vbo.push_back(y);
 		vbo.push_back(z);
 		//push id ?
-		//vbo.push_back();
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 
@@ -213,9 +216,9 @@ void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d
 		vbo.push_back(y + d.y);
 		vbo.push_back(z);
 		//push id ?
-		//vbo.push_back();
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 		//push fourth vertex 
@@ -224,9 +227,9 @@ void World::calcVertex(int x, int y, int z, std::vector<float> &vbo, glm::vec3 d
 		vbo.push_back(y + d.y);
 		vbo.push_back(z);
 		//push id ?
-		//vbo.push_back();
+		vbo.push_back(id);
 		//push color R G B
-		vbo.push_back(255.0);
+		vbo.push_back(1.0);
 		vbo.push_back(0.0);
 		vbo.push_back(0.0);
 	}
