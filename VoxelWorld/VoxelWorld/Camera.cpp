@@ -115,3 +115,27 @@ void Camera::swapProjectionMode() {
 		setOrthographicProjection();
 	}
 }
+
+void Camera::move(int mode) {
+	if (mode == 0) {
+		_cameraPos.x += 0.1f;
+		_cameraFront.x += 0.1f;
+	}
+	else if (mode == 2) {
+		_cameraPos.x -= 0.1f;
+		_cameraFront.x -= 0.1f;
+	}
+	else if (mode == 1) {
+		_cameraPos.y += 0.1f;
+		_cameraFront.y += 0.1f;
+	}
+	else if (mode == 3) {
+		_cameraPos.y -= 0.1f;
+		_cameraFront.y -= 0.1f;
+	}
+
+	updateCameraMatrix();
+}
+void Camera::zoom(int mode) {
+
+}

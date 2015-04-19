@@ -40,6 +40,8 @@ public:
 	void updateCameraMatrix();
 	void setCameraFront(glm::vec3 & cameraFront);
 	void setCameraPosition(glm::vec3 & cameraPos);
-	void setResolution(float screenHeight, float screenWidth);	
+	void setResolution(float screenHeight, float screenWidth);
+	void move(int mode);
+	void zoom(int mode);
 };
 

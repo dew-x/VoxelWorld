@@ -75,7 +75,7 @@ void Game::loadShaders() {
 * Load the game information. For example, where are placed enemies, the hero, walls, etc.
 */
 void Game::loadSceneToRender() {
-		//Load the game
+	//Load the game
 	vbo = std::vector<Vertex>(0);
 	w = new World();
 	w->generator(vbo);
@@ -115,11 +115,13 @@ void Game::initCameras() {
 		//Initialize the view transformation matrix of the the cameras based on CameraPosition, CameraFront, Height, Width ..
 	
 	_camera[FIST_CAMERA].setCameraPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-	_camera[FIST_CAMERA].setCameraFront(glm::vec3(1.0f, 0.0f, 1.0f));
+	_camera[FIST_CAMERA].setCameraFront(glm::vec3(-1.0f, 0.0f, -1.0f));
+	_camera[FIST_CAMERA].swapProjectionMode();
 
 		//The 2nd camera represents a camera at third person
 	_camera[SECOND_CAMERA].setCameraPosition(glm::vec3(4.0f, 4.0f, 4.0f));
 	_camera[SECOND_CAMERA].setCameraFront(glm::vec3(2.0f, 2.0f, 2.0f));
+	_camera[SECOND_CAMERA].swapProjectionMode();
 
 		//Set the current camera
 	_currentCamara = FIST_CAMERA;
@@ -197,6 +199,7 @@ void Game::drawGame() {
 
 		//Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glEnable(GL_DEPTH_TEST);
 		//Bind the GLSL program. Only one code GLSL can be used at the same time
 	_colorProgram.use();	
 		//Activate and Bind Texture
@@ -224,7 +227,7 @@ void Game::drawGame() {
 	glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getViewMatrix()));
 	glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getProjectionMatrix()));
-	glm::vec4 colortmp = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glm::vec4 colortmp = { 1.0f, 1.0f, 1.0f, -1.0f };
 	glUniform4fv(newColorUniform, 1, glm::value_ptr(colortmp));
 	glUniform1i(textureDataLocation, 0);		//This line is not needed if we use only 1 texture, it is sending the GL_TEXTURE0
 	glUniform1i(drawModeUniform, _drawMode);
@@ -299,6 +302,7 @@ void Game::ExecutePlayerCommands() {
 		//Changes the draw mode
 	if (_inputManager.isKeyPressed(SDLK_t)){
 		_drawMode = (_drawMode + 1) % DRAW_MODE;
+		std::cout << "DRAWMODE" << _drawMode << std::endl;
 	}
 	
 		//Changes the current camera 
@@ -308,6 +312,18 @@ void Game::ExecutePlayerCommands() {
 	
 		//Add the additional keys pressed by the player for moving/changing the state of the player object
 
+	if (_inputManager.isKeyPressed(SDLK_w)){
+		_camera[_currentCamara].move(0);
+	}
+	if (_inputManager.isKeyPressed(SDLK_s)){
+		_camera[_currentCamara].move(2);
+	}
+	if (_inputManager.isKeyPressed(SDLK_d)){
+		_camera[_currentCamara].move(1);
+	}
+	if (_inputManager.isKeyPressed(SDLK_a)){
+		_camera[_currentCamara].move(3);
+	}
 }
 
 /*

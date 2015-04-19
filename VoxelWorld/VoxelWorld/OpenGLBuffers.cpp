@@ -154,7 +154,7 @@ void OpenGLBuffers::drawData(int begin, int end) {
 
 	//Bind the vertex buffer object
 	glBindBuffer(GL_ARRAY_BUFFER, _gVBO);
-
+	
 	//Draw a set of elements(numVertices) from the VBO as GL_TRIANGLES. The first vertex is in the 0th position
 	glDrawArrays(GL_QUADS, begin, end);
 
