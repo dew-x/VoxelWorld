@@ -25,6 +25,7 @@ struct UV {
 
 struct Vertex {
 	Position position;
+	GLuint id;
 	ColorRGBA8 color;
 	UV uv;
 
@@ -44,5 +45,9 @@ struct Vertex {
 	void setUV(float u, float v) {
 		uv.u = u;
 		uv.v = v;
+	}
+
+	void setId(GLuint id) {
+		this->id = id;
 	}
 };

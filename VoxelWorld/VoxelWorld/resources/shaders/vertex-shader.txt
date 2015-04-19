@@ -3,6 +3,8 @@
 	//vec3 means a vector of 3 positions that will manage x, y, z
 in vec3 vertexPosition;
 	//vec4 means a vector of 4 positions that will manage RGBA		
+in uint vertexId;
+
 in vec4 vertexColor;
 	//vec2 means a vector of 2 positions that will manage the UV
 in vec2 vertexUV;
@@ -22,8 +24,10 @@ uniform vec2 textureScaleFactor;
 
 
 void main() {
+	if (vertexId==0 || vertexId!=0) {
 		//Multiply the vertex by the model matrix transformation
-	gl_Position = projectionMatrix*viewMatrix*modelMatrix*vec4(vertexPosition, 1);
+		gl_Position = projectionMatrix*viewMatrix*modelMatrix*vec4(vertexPosition, 1);
+	}
 
 		//We need to create the output variables that will go to the fragment shader,
 		//so, we assign the in variables to the new out variables	

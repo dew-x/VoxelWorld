@@ -64,6 +64,8 @@ void OpenGLBuffers::initializeVertexArrayObject(GLSLProgram & _colorProgram) {
 	
 		//Connect the xyz to the "vertexPosition" attribute of the vertex shader
 	glEnableVertexAttribArray(_colorProgram.getAttribLocation("vertexPosition"));
+		//Connect the id to the "vertexId" attribute of the vertex shader
+	glEnableVertexAttribArray(_colorProgram.getAttribLocation("vertexId"));
 		//Connect the rgba to the "vertexColor" attribute of the vertex shader
 	glEnableVertexAttribArray(_colorProgram.getAttribLocation("vertexColor"));
 		//Connect the uv to the "vertexUV" attribute of the vertex shader
@@ -80,6 +82,19 @@ void OpenGLBuffers::initializeVertexArrayObject(GLSLProgram & _colorProgram) {
 	*/
 	glVertexAttribPointer(_colorProgram.getAttribLocation("vertexPosition"), 3, GL_FLOAT, GL_FALSE, sizeof(Vertex),(void*)offsetof(Vertex, position));
 	
+	/* 
+
+	MUST MODIFY 
+
+	The vertexColor attribute refers to the color in RGBA components
+	The first argument is the shader variable that the data should be sent to
+	The second argument, 4, says that the color contains 4 numbers
+	The third argument, GL_UNSIGNED_BYTE, says that the  numbers are GLubyte
+	The fourth argument, GL_TRUE, allows to normalize values between 0 and 1
+	The fifth argument, sizeof(Vertex), says that the information in the buffer vertex object will be composed by elements of the type Vertex
+	The sixth argument, (void*)offsetof(Vertex, color), says where starts this kind of information in the vertex buffer object
+	*/
+	glVertexAttribPointer(_colorProgram.getAttribLocation("vertexId"), 1, GL_UNSIGNED_INT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, id));
 
 	/* The vertexColor attribute refers to the color in RGBA components
 	The first argument is the shader variable that the data should be sent to
@@ -125,12 +140,27 @@ void OpenGLBuffers::sendDataToGPU(Vertex * data, int numVertices) {
 	glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), data, GL_DYNAMIC_DRAW);
 
 	//Draw a set of elements(numVertices) from the VBO as GL_TRIANGLES. The first vertex is in the 0th position
-	glDrawArrays(GL_TRIANGLES, 0, numVertices);
+	//glDrawArrays(GL_TRIANGLES, 0, numVertices);
 
 	//Unbind the VBO and VAO
 	glBindVertexArray(0);	
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
+}
+
+void OpenGLBuffers::drawData(int begin, int end) {
+	//Bind the vertex array object
+	glBindVertexArray(_gVAO);
+
+	//Bind the vertex buffer object
+	glBindBuffer(GL_ARRAY_BUFFER, _gVBO);
+
+	//Draw a set of elements(numVertices) from the VBO as GL_TRIANGLES. The first vertex is in the 0th position
+	glDrawArrays(GL_QUADS, begin, end);
+
+	//Unbind the VBO and VAO
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 void OpenGLBuffers::swapPolygonMode() {

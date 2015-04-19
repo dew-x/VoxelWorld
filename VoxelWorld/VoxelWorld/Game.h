@@ -8,6 +8,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <iostream>
+#include <vector>
 #include "Window.h"
 #include "GLSLProgram.h"
 #include "FPSLimiter.h"
@@ -18,6 +19,7 @@
 #include "InputManager.h"
 #include "Camera.h"
 #include "TextureManager.h"
+#include "World.h"
 
 #define ORIGINAL_COLOR 0
 #define TEXTURE_COLOR 1
@@ -54,6 +56,8 @@ class Game {
 		InputManager _inputManager;		//Manage the input devices
 		TextureManager _textureManager;	//Manage all the data related to the different textures used in the game
 		
+		World *w;
+		std::vector<Vertex> vbo;
 
 		Geometry _gameElements;			//Manage the game elements
 		vector <Camera> _camera;		//Manage the cameras

@@ -19,6 +19,7 @@ public:
 	void allocateVAOVBO();
 	void initializeVertexArrayObject(GLSLProgram & _colorProgram);
 	void sendDataToGPU(Vertex * data, int numVertex);
+	void drawData(int begin, int end);
 	void swapPolygonMode();
 };
 

@@ -23,6 +23,7 @@ Game::Game(std::string windowTitle, int screenWidth, int screenHeight, bool enab
 */
 Game::~Game()
 {
+	delete w;
 }
 
 /*
@@ -62,7 +63,8 @@ void Game::loadShaders() {
 	_colorProgram.addShader(GL_FRAGMENT_SHADER, "./resources/shaders/fragment-shader.txt");
 	_colorProgram.compileShaders();
 		//Attributes must be added before linking the code
-	_colorProgram.addAttribute("vertexPositionGame");
+	_colorProgram.addAttribute("vertexPosition");
+	_colorProgram.addAttribute("vertexId");
 	_colorProgram.addAttribute("vertexColor");
 	_colorProgram.addAttribute("vertexUV");
 		//Link the compiled shaders
@@ -74,8 +76,12 @@ void Game::loadShaders() {
 */
 void Game::loadSceneToRender() {
 		//Load the game
-	_gameElements.loadGameElements("./resources/scene3D.txt");	
-	
+	vbo = std::vector<Vertex>(0);
+	w = new World();
+	w->generator(vbo);
+	std::cout << vbo.size() << std::endl;
+	//_gameElements.loadGameElements("./resources/scene3D.txt");	
+	_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
 }
 
 /**
@@ -108,12 +114,12 @@ void Game::initCameras() {
 
 		//Initialize the view transformation matrix of the the cameras based on CameraPosition, CameraFront, Height, Width ..
 	
-	_camera[FIST_CAMERA].setCameraPosition(glm::vec3(0.01f, 0.0f, 2.0f));
-	_camera[FIST_CAMERA].setCameraFront(glm::vec3(0.0f, 0.0f, 0.0f));
+	_camera[FIST_CAMERA].setCameraPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+	_camera[FIST_CAMERA].setCameraFront(glm::vec3(1.0f, 0.0f, 1.0f));
 
 		//The 2nd camera represents a camera at third person
-	_camera[SECOND_CAMERA].setCameraPosition(glm::vec3(3.0f, 3.0f, 3.0f));
-	_camera[SECOND_CAMERA].setCameraFront(glm::vec3(0.0f, 0.0f, 0.0f));
+	_camera[SECOND_CAMERA].setCameraPosition(glm::vec3(4.0f, 4.0f, 4.0f));
+	_camera[SECOND_CAMERA].setCameraFront(glm::vec3(2.0f, 2.0f, 2.0f));
 
 		//Set the current camera
 	_currentCamara = FIST_CAMERA;
@@ -195,9 +201,36 @@ void Game::drawGame() {
 	_colorProgram.use();	
 		//Activate and Bind Texture
 	glActiveTexture(GL_TEXTURE0);
+	glm::mat4 modelMatrix = glm::mat4(1.0);
+	/*currentRenderedGameElement = _gameElements.getGameElement(i);
+	modelMatrix = glm::translate(modelMatrix, currentRenderedGameElement._translate);
+	if (currentRenderedGameElement._angle != 0) {
+		modelMatrix = glm::rotate(modelMatrix, glm::radians(currentRenderedGameElement._angle), currentRenderedGameElement._rotation);
+	}
+	modelMatrix = glm::scale(modelMatrix, currentRenderedGameElement._scale);
 
+	//Texture
+	glBindTexture(GL_TEXTURE_2D, currentRenderedGameElement._textureID);*/
+
+	//Bind the uniform data to the shader
+	/*Pass the matrix information to the shader
+	//Get the uniform variable location
+	//Pass the matrix
+	//1st parameter: the location
+	//2nd parameter: the number of matrices
+	//3rd parameter: if we want to transpose the matrix
+	//4th parameter: the matrix data
+	*/
+	glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
+	glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getViewMatrix()));
+	glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getProjectionMatrix()));
+	glm::vec4 colortmp = { 1.0f, 1.0f, 1.0f, 1.0f };
+	glUniform4fv(newColorUniform, 1, glm::value_ptr(colortmp));
+	glUniform1i(textureDataLocation, 0);		//This line is not needed if we use only 1 texture, it is sending the GL_TEXTURE0
+	glUniform1i(drawModeUniform, _drawMode);
+	_openGLBuffers.drawData(0, vbo.size());
 		//Each object MUST BE RENDERED based on the position, rotation and scale
-	for (int i = 0; i < _gameElements.getNumGameElements(); i++) {		
+	/*for (int i = 0; i < _gameElements.getNumGameElements(); i++) {		
 			//Model transformation matrix will scale, rotate and translate the current object. This matrix is built in the inverse order of the operations
 		glm::mat4 modelMatrix;		
 		currentRenderedGameElement = _gameElements.getGameElement(i);
@@ -218,7 +251,7 @@ void Game::drawGame() {
 			//2nd parameter: the number of matrices
 			//3rd parameter: if we want to transpose the matrix
 			//4th parameter: the matrix data
-			*/		
+				
 		glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 		glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getViewMatrix()));
 		glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getProjectionMatrix()));
@@ -236,8 +269,8 @@ void Game::drawGame() {
 		
 			//Unbind the texture
 		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-	
+	}*/
+	glBindTexture(GL_TEXTURE_2D, 0);
 		//Unbind the program
 	_colorProgram.unuse();
 

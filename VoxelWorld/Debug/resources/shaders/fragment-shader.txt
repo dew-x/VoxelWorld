@@ -25,5 +25,6 @@ void main() {
 		default: 
 			finalColor = fragmentColor*texture(textureData,fragmentTextureCoordinates);
 	}			
+	finalColor = vec4(1.0,0.0,0.0,1.0)
 }
 
