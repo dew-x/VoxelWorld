@@ -102,28 +102,28 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x, y, z+d.z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
-		v.setUV(0.0f, 0.0f);
+		v.setUV(0.0f, 1.0f);
 		vbo.push_back(v);
 
 		//push third vertex
 		v.setPosition(x+d.x, y, z + d.z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
-		v.setUV(0.0f, 0.0f);
+		v.setUV(1.0f, 0.0f);
 		vbo.push_back(v);
 
 		//push fourth vertex 
 		v.setPosition(x + d.x, y, z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
-		v.setUV(0.0f, 0.0f);
+		v.setUV(1.0f, 1.0f);
 		vbo.push_back(v);
 	}else if (d.y == d.z){
 		//push first vertex
 		v.setPosition(x, y, z);
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
-		v.setUV(0.0f, 0.0f);
+		v.setUV(1.0f, 0.0f);
 		vbo.push_back(v);
 
 		//push second vertex
@@ -137,35 +137,35 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x, y + d.y, z + d.z);
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
-		v.setUV(0.0f, 0.0f);
+		v.setUV(0.0f, 1.0f);
 		vbo.push_back(v);
 
 		//push fourth vertex 
 		v.setPosition(x , y, z+d.z);
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
-		v.setUV(0.0f, 0.0f);
+		v.setUV(1.0f, 1.0f);
 		vbo.push_back(v);
 	}else{
 		//push first vertex
 		v.setPosition(x, y, z);
 		v.setId(id);
 		v.setColor(0, 0, 255, 255);
-		v.setUV(0.0f, 0.0f);
+		v.setUV(0.0f, 1.0f);
 		vbo.push_back(v);
 
 		//push second vertex
 		v.setPosition(x+d.x, y, z);
 		v.setId(id);
 		v.setColor(0, 0, 255, 255);
-		v.setUV(0.0f, 0.0f);
+		v.setUV(1.0f, 1.0f);
 		vbo.push_back(v);
 
 		//push third vertex
 		v.setPosition(x+d.x, y + d.y, z);
 		v.setId(id);
 		v.setColor(0, 0, 255, 255);
-		v.setUV(0.0f, 0.0f);
+		v.setUV(1.0f, 0.0f);
 		vbo.push_back(v);
 
 		//push fourth vertex 
