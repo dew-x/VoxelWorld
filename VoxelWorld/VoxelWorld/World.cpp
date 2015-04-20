@@ -28,10 +28,10 @@ World::~World(){
 inline unsigned World::coord(unsigned x, unsigned y, unsigned z){ return depth*(x*height + y) + z; }
 
 //comprovate if is inside of the cube in de x, y,z position
-inline bool World::inside(unsigned x, unsigned y, unsigned z){ return 0 >= x && x < width && 0 >= y && y < height && 0 >= z && z < depth; }
+inline bool World::inside(unsigned x, unsigned y, unsigned z){ return (0 <= x && x < width) && (0 <= y && y < height) && (0 <= z && z < depth); }
 
 //comprovate if cube in position exists
-bool World::isEmpty(unsigned x, unsigned y, unsigned z){ return cubs[coord(x, y, z)] = 0; }
+bool World::isEmpty(unsigned x, unsigned y, unsigned z){ return cubs[coord(x, y, z)] == 0; }
 
 //generate vbo array of vertex
 void World::generator(std::vector<Vertex> &vbo){
@@ -69,7 +69,7 @@ void World::generator(std::vector<Vertex> &vbo){
 				//bot face
 				calcVertex(xp, yp, zp, vbo, glm::vec3(1, 1, 0), cubs[i]);
 
-			}if (!inside(xp, yp, zp) || isEmpty(xp, yp, zp+1)){
+			}if (!inside(xp, yp, zp+1) || isEmpty(xp, yp, zp+1)){
 				//top face
 				calcVertex(xp + 1, yp + 1, zp + 1, vbo, glm::vec3(-1, -1, 0), cubs[i]);
 			}
