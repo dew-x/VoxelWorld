@@ -55,7 +55,7 @@ void World::generator(std::vector<Vertex> &vbo){
 				calcVertex(xp, yp, zp, vbo, glm::vec3(0, 1, 1), cubs[i]);
 			}if (!inside(xp + 1, yp, zp) || isEmpty(xp + 1, yp, zp)){
 				//right face
-				calcVertex(xp, yp, zp, vbo, glm::vec3(0, -1, -1), cubs[i]);
+				calcVertex(xp+1, yp+1, zp+1, vbo, glm::vec3(0, -1, -1), cubs[i]);
 
 			}if (!inside(xp , yp-1, zp) || isEmpty(xp , yp-1, zp)){
 				//front face
@@ -63,7 +63,7 @@ void World::generator(std::vector<Vertex> &vbo){
 
 			}if (!inside(xp , yp+1, zp) || isEmpty(xp, yp+1, zp)){
 				//back face
-				calcVertex(xp, yp, zp, vbo, glm::vec3(-1, 0, -1), cubs[i]);
+				calcVertex(xp + 1, yp + 1, zp + 1, vbo, glm::vec3(-1, 0, -1), cubs[i]);
 
 			}if (!inside(xp, yp, zp-1) || isEmpty(xp, yp, zp-1)){
 				//bot face
@@ -71,7 +71,7 @@ void World::generator(std::vector<Vertex> &vbo){
 
 			}if (!inside(xp, yp, zp) || isEmpty(xp, yp, zp+1)){
 				//top face
-				calcVertex(xp, yp, zp, vbo, glm::vec3(-1, -1, 0), cubs[i]);
+				calcVertex(xp + 1, yp + 1, zp + 1, vbo, glm::vec3(-1, -1, 0), cubs[i]);
 			}
 			
 		}
