@@ -4,6 +4,7 @@ class Player
 {
 private:
 	glm::vec3 position;
+	glm::vec3 dir;
 	glm::vec3 min, max;
 public:
 	Player(glm::vec3 pos);
