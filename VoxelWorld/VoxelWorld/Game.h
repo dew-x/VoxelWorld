@@ -62,6 +62,7 @@ class Game {
 		Geometry _gameElements;			//Manage the game elements
 		vector <Camera> _camera;		//Manage the cameras
 		int _currentCamara;
+		GLuint tex;
 
 			//Internal methods
 		void initSystems();

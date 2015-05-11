@@ -94,13 +94,14 @@ void Game::loadGameTextures() {
 			- Next, you can loop through the GameObjects stored in the Geometry class, and assign the textureID in each GameObject
 		*/
 
-		GameObject currentGameObject;
+		//GameObject currentGameObject;
 			//Load the game textures			
-		for (int i = 0; i < _gameElements.getNumGameElements(); i++) {
+		/*for (int i = 0; i < _gameElements.getNumGameElements(); i++) {
 			currentGameObject = _gameElements.getGameElement(i);
 			(_gameElements.getGameElement(i))._textureID = _textureManager.getTextureID(currentGameObject._textureFile);
-		}
-		
+		}*/
+	tex = _textureManager.getTextureID("resources/textures/floor.jpg");
+	
 	
 }
 
@@ -203,7 +204,8 @@ void Game::drawGame() {
 		//Bind the GLSL program. Only one code GLSL can be used at the same time
 	_colorProgram.use();	
 		//Activate and Bind Texture
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(tex);
+	glBindTexture(GL_TEXTURE_2D, tex);
 	glm::mat4 modelMatrix = glm::mat4(1.0);
 	/*currentRenderedGameElement = _gameElements.getGameElement(i);
 	modelMatrix = glm::translate(modelMatrix, currentRenderedGameElement._translate);
@@ -228,8 +230,9 @@ void Game::drawGame() {
 	glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getViewMatrix()));
 	glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getProjectionMatrix()));
 	glm::vec4 colortmp = { 1.0f, 1.0f, 1.0f, -1.0f };
+	glUniform2f(textureScaleFactorLocation, 1.0f, 1.0f);
 	glUniform4fv(newColorUniform, 1, glm::value_ptr(colortmp));
-	glUniform1i(textureDataLocation, 0);		//This line is not needed if we use only 1 texture, it is sending the GL_TEXTURE0
+	//glUniform1i(textureDataLocation,0);		//This line is not needed if we use only 1 texture, it is sending the GL_TEXTURE0
 	glUniform1i(drawModeUniform, _drawMode);
 	_openGLBuffers.drawData(0, vbo.size());
 		//Each object MUST BE RENDERED based on the position, rotation and scale
