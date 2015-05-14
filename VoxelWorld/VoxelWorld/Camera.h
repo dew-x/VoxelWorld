@@ -40,8 +40,11 @@ public:
 	void updateCameraMatrix();
 	void setCameraFront(glm::vec3 & cameraFront);
 	void setCameraPosition(glm::vec3 & cameraPos);
+	void setCameraUp(glm::vec3 & cameraUp);
 	void setResolution(float screenHeight, float screenWidth);
 	void move(int mode);
 	void zoom(int mode);
+	inline glm::mat4 &getProjectionMatrix() { return _projectionMatrix; };
+	inline glm::mat4 &getViewMatrix() { return _viewMatrix; };
 };
 

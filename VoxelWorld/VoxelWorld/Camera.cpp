@@ -8,8 +8,8 @@
 */
 Camera::Camera():	
 	_orthographicMode(false),
-	_near(0.1f),
-	_far(100000.0f),
+	_near(0.003f),
+	_far(1000.0f),
 	_projectionWidth(30.0f),
 	_projectionHeight(30.0f),
 	_FOV(45.0f),
@@ -61,6 +61,11 @@ void Camera::setCameraPosition(glm::vec3 & cameraPos) {
 */
 void Camera::setCameraFront(glm::vec3 & cameraFront) {
 	_cameraFront = cameraFront;
+	updateCameraMatrix();
+}
+
+void Camera::setCameraUp(glm::vec3 & cameraUp){
+	_cameraUp = cameraUp;
 	updateCameraMatrix();
 }
 

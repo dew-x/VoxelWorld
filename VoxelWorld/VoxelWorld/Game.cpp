@@ -115,12 +115,12 @@ void Game::initCameras() {
 
 		//Initialize the view transformation matrix of the the cameras based on CameraPosition, CameraFront, Height, Width ..
 	
-	_camera[FIST_CAMERA].setCameraPosition(glm::vec3(-4.0f, -4.0f, -4.0f));
-	_camera[FIST_CAMERA].setCameraFront(glm::vec3(0.0f, 0.0f, 0.0f));
+	_camera[FIST_CAMERA].setCameraPosition(glm::vec3(1.0f, 1.0f, 0.1f));
+	_camera[FIST_CAMERA].setCameraFront(glm::vec3(1.0f, 0.0f, 0.0f));
 	_camera[FIST_CAMERA].swapProjectionMode();
 
 		//The 2nd camera represents a camera at third person
-	_camera[SECOND_CAMERA].setCameraPosition(glm::vec3(4.0f, 4.0f, 4.0f));
+	_camera[SECOND_CAMERA].setCameraPosition(glm::vec3(1.0f, 1.0f, 1.0f));
 	_camera[SECOND_CAMERA].setCameraFront(glm::vec3(2.0f, 2.0f, 2.0f));
 	_camera[SECOND_CAMERA].swapProjectionMode();
 
