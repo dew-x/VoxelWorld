@@ -3,13 +3,14 @@
 #include "Utils.h"
 #include <string>
 
+
 /*
 * Default constructor
 */
 Camera::Camera():	
 	_orthographicMode(false),
 	_near(0.003f),
-	_far(1000.0f),
+	_far(100000.0f),
 	_projectionWidth(30.0f),
 	_projectionHeight(30.0f),
 	_FOV(45.0f),
@@ -77,7 +78,7 @@ void Camera::setCameraUp(glm::vec3 & cameraUp){
 void Camera::setResolution(float screenHeight, float screenWidth) {
 	_screenHeight = screenHeight;
 	_screenWidth = screenWidth;
-	_aspectRatio=_screenWidth / _screenHeight;
+	_aspectRatio = _screenWidth / _screenHeight;
 }
 
 /*
@@ -104,10 +105,14 @@ void Camera::updateCameraMatrix() {
 	_cameraUp = glm::cross(cameraDirection, cameraRight);
 
 	_viewMatrix = glm::lookAt(_cameraPos, _cameraFront, _cameraUp);
-	std::cout << "From " << Utils::vecToString(_cameraPos) << " to " << Utils::vecToString(_cameraFront) << " - V_AT= " << Utils::vecToString(glm::normalize(_cameraFront - _cameraPos)) << " and  V_UP: " << Utils::vecToString(_cameraUp) << std::endl;
+	//std::cout << "From " << Utils::vecToString(_cameraPos) << " to " << Utils::vecToString(_cameraFront) << " - V_AT= " << Utils::vecToString(glm::normalize(_cameraFront - _cameraPos)) << " and  V_UP: " << Utils::vecToString(_cameraUp) << std::endl;
+	/*
+	_cameraUp = glm::cross(dir, right);
+	_viewMatrix = glm::lookAt(_cameraPos, _cameraPos+dir, _cameraUp);
+	*/
 }
 
-/* 
+/*
 * Change the current projection matrix from orthographic to perspective or from perspective to orthographic
 */
 void Camera::swapProjectionMode() {
@@ -144,3 +149,4 @@ void Camera::move(int mode) {
 void Camera::zoom(int mode) {
 
 }
+

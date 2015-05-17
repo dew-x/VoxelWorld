@@ -4,6 +4,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#define _USE_MATH_DEFINES
+#include <math.h>
 #define CAMERA_SPEED 0.2f
 
 
@@ -24,6 +26,8 @@ private:
 	glm::vec3 _cameraPos;
 	glm::vec3 _cameraFront;
 	glm::vec3 _cameraUp;
+	glm::vec3 _cameraDir;
+	glm::vec3 _cameraRight;
 		//Internal methods
 	void setOrthographicProjection();
 	void setPerspectiveProjection();
@@ -44,7 +48,5 @@ public:
 	void setResolution(float screenHeight, float screenWidth);
 	void move(int mode);
 	void zoom(int mode);
-	inline glm::mat4 &getProjectionMatrix() { return _projectionMatrix; };
-	inline glm::mat4 &getViewMatrix() { return _viewMatrix; };
 };
 

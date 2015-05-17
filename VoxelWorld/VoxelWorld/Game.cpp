@@ -79,6 +79,10 @@ void Game::loadSceneToRender() {
 	vbo = std::vector<Vertex>(0);
 	w = new World();
 	w->generator(vbo);
+	glm::vec3 initPlayerPos = { 2, 1, 2 };
+	glm::vec3 initPlayerdir = { 0, 0, 1 };
+	player = new Player(initPlayerPos);
+	player->setDirection(initPlayerdir);
 	std::cout << vbo.size() << std::endl;
 	//_gameElements.loadGameElements("./resources/scene3D.txt");	
 	_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
@@ -163,7 +167,9 @@ void Game::processInput() {
 			_gameState = GameState::EXIT;
 			break;
 		case SDL_MOUSEMOTION:
-			_inputManager.setMouseCoords(evnt.motion.x, evnt.motion.y);
+			_inputManager.setMouseCoords(evnt.motion.xrel, evnt.motion.yrel);
+			//cout << " xrel of mouse "<< evnt.motion.xrel << " yrel of mouse " << evnt.motion.yrel<< "\n";
+			player->addMouseDeltas(evnt.motion.xrel, evnt.motion.yrel);
 			break;
 		case SDL_KEYDOWN:
 			_inputManager.pressKey(evnt.key.keysym.sym);
@@ -293,6 +299,8 @@ void Game::updateGameObjects() {
 	ExecutePlayerCommands();
 		//Execute the game logic
 	ExecuteGameLogic();
+	_camera[_currentCamera].setCameraPosition(player->getPosition());
+	_camera[_currentCamera].setCameraFront(player->getCameraFront());
 }
 
 /**
@@ -302,7 +310,9 @@ void Game::updateGameObjects() {
 	- c changes the camera
 */
 void Game::ExecutePlayerCommands() {
-		//Changes the draw mode
+	glm::vec2 deltaPos = { 0, 0 };
+	float deltaT = 1.0/60.0;		
+	//Changes the draw mode
 	if (_inputManager.isKeyPressed(SDLK_t)){
 		_drawMode = (_drawMode + 1) % DRAW_MODE;
 		std::cout << "DRAWMODE" << _drawMode << std::endl;
@@ -316,16 +326,24 @@ void Game::ExecutePlayerCommands() {
 		//Add the additional keys pressed by the player for moving/changing the state of the player object
 
 	if (_inputManager.isKeyPressed(SDLK_w)){
-		_camera[_currentCamara].move(0);
+		//_camera[_currentCamara].move(0);
+		deltaPos.x += 1;
 	}
 	if (_inputManager.isKeyPressed(SDLK_s)){
-		_camera[_currentCamara].move(2);
+		//_camera[_currentCamara].move(2);
+		deltaPos.x -= 1;
 	}
 	if (_inputManager.isKeyPressed(SDLK_d)){
-		_camera[_currentCamara].move(1);
+		//_camera[_currentCamara].move(1);
+		deltaPos.y += 1;
 	}
 	if (_inputManager.isKeyPressed(SDLK_a)){
-		_camera[_currentCamara].move(3);
+		//_camera[_currentCamara].move(3);
+		deltaPos.y -= 1;
+	}
+	if (deltaPos.x != 0 || deltaPos.y != 0){
+		deltaPos = glm::normalize(deltaPos)*deltaT;
+		player->moveDeltas(deltaPos.x, deltaPos.y);
 	}
 }
 
@@ -336,3 +354,20 @@ void Game::ExecuteGameLogic() {
 	//Execute the game logic (move bullets, enemies, etc.)
 
 }
+
+/*
+void Game::ProcessCameraMovement() {
+//if (_inputManager.getCurMouseCoords().x != _inputManager.getPrevMouseCoords().x) camAngle.x += (float)(_inputManager.getCurMouseCoords().x - _inputManager.getPrevMouseCoords().x)*10.0f;
+
+float angleHor = _cameraSpeed * -_inputManager.getCurMouseCoords().x;
+float angleVert = _cameraSpeed * _inputManager.getCurMouseCoords().y;
+
+if (angleVert < -4.5) angleVert = -4.5;
+if (angleVert > -2.0) angleVert = -2.0;
+
+_cameraDir = { cos(angleVert) * sin(angleHor), sin(angleVert), cos(angleVert) * cos(angleHor) };
+_cameraRight = { sin(angleHor - M_PI / 2.0f), 0.0f, cos(angleHor - M_PI / 2.0f) };
+
+_camera[_currentCamera].updateCameraMatrix(_cameraDir, _cameraRight);
+}
+*/

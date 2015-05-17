@@ -10,6 +10,7 @@
 Window::Window() 	{
 	//Initialize all the SDL elements, even they are not used for this example
 	SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 
 	//All the SDL_GL_Set attributes must be done before creating the window
 	//Tell SDL that we want a double buffered window so we don't get any flickering

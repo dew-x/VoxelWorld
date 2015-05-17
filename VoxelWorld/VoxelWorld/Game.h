@@ -20,6 +20,7 @@
 #include "Camera.h"
 #include "TextureManager.h"
 #include "World.h"
+#include "Player.h"
 
 #define ORIGINAL_COLOR 0
 #define TEXTURE_COLOR 1
@@ -57,10 +58,15 @@ class Game {
 		TextureManager _textureManager;	//Manage all the data related to the different textures used in the game
 		
 		World *w;
+		Player *player;
 		std::vector<Vertex> vbo;
 
 		Geometry _gameElements;			//Manage the game elements
 		vector <Camera> _camera;		//Manage the cameras
+		int _currentCamera;
+		float _cameraSpeed = -0.01f;
+		glm::vec3 _cameraDir;
+		glm::vec3 _cameraRight;	
 		int _currentCamara;
 		GLuint tex;
 
@@ -76,6 +82,7 @@ class Game {
 		void updateGameObjects();
 		void ExecutePlayerCommands();
 		void ExecuteGameLogic();
+		void ProcessCameraMovement();
 		void drawGame();	
 		
 };
