@@ -79,8 +79,8 @@ void Game::loadSceneToRender() {
 	vbo = std::vector<Vertex>(0);
 	w = new World();
 	w->generator(vbo);
-	glm::vec3 initPlayerPos = { 2, 1, 2 };
-	glm::vec3 initPlayerdir = { 0, 0, 1 };
+	glm::vec3 initPlayerPos = { 10, 6, 10};
+	glm::vec3 initPlayerdir = { 1, 0, 0 };
 	player = new Player(initPlayerPos);
 	player->setDirection(initPlayerdir);
 	std::cout << vbo.size() << std::endl;
@@ -310,8 +310,10 @@ void Game::updateGameObjects() {
 	- c changes the camera
 */
 void Game::ExecutePlayerCommands() {
-	glm::vec2 deltaPos = { 0, 0 };
-	float deltaT = 1.0/60.0;		
+	glm::vec3 deltaPos = { 0 , 0 , 0 };
+	glm::vec3 right = { 0, 0, 0 };
+	glm::vec3 left = { 0, 0, 0 };
+	float deltaT = (1.0/60.0)*100;		
 	//Changes the draw mode
 	if (_inputManager.isKeyPressed(SDLK_t)){
 		_drawMode = (_drawMode + 1) % DRAW_MODE;
@@ -327,19 +329,19 @@ void Game::ExecutePlayerCommands() {
 
 	if (_inputManager.isKeyPressed(SDLK_w)){
 		//_camera[_currentCamara].move(0);
-		deltaPos.x += 1;
+		deltaPos.y += 1;
 	}
 	if (_inputManager.isKeyPressed(SDLK_s)){
 		//_camera[_currentCamara].move(2);
-		deltaPos.x -= 1;
+		deltaPos.y -= 1;
 	}
 	if (_inputManager.isKeyPressed(SDLK_d)){
 		//_camera[_currentCamara].move(1);
-		deltaPos.y += 1;
+		deltaPos.x += 1;
 	}
 	if (_inputManager.isKeyPressed(SDLK_a)){
 		//_camera[_currentCamara].move(3);
-		deltaPos.y -= 1;
+		deltaPos.x -= 1;
 	}
 	if (deltaPos.x != 0 || deltaPos.y != 0){
 		deltaPos = glm::normalize(deltaPos)*deltaT;

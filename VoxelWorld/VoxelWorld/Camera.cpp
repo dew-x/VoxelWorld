@@ -10,7 +10,7 @@
 Camera::Camera():	
 	_orthographicMode(false),
 	_near(0.003f),
-	_far(100000.0f),
+	_far(1000.0f),
 	_projectionWidth(30.0f),
 	_projectionHeight(30.0f),
 	_FOV(45.0f),
@@ -101,10 +101,13 @@ void Camera::setPerspectiveProjection() {
 void Camera::updateCameraMatrix() {
 	glm::vec3 cameraDirection = glm::normalize(_cameraPos - _cameraFront);
 	glm::vec3 up = glm::vec3(0.0f, 0.0f, 1.0f);
-	glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
+	glm::vec3 cameraRight = glm::normalize(glm::cross( cameraDirection, up));
 	_cameraUp = glm::cross(cameraDirection, cameraRight);
 
 	_viewMatrix = glm::lookAt(_cameraPos, _cameraFront, _cameraUp);
+	std::cout << "\n" << "camera pos : " << _cameraPos.x << " " << _cameraPos.y << " " << _cameraPos.z << "\n";
+	std::cout << "\n" << "camera front : " << _cameraFront.x << " " << _cameraFront.y << " " << _cameraFront.z << "\n";
+	std::cout << "\n" << "camera up : " << _cameraUp.x << " " << _cameraUp.y << " " << _cameraUp.z << "\n";
 	//std::cout << "From " << Utils::vecToString(_cameraPos) << " to " << Utils::vecToString(_cameraFront) << " - V_AT= " << Utils::vecToString(glm::normalize(_cameraFront - _cameraPos)) << " and  V_UP: " << Utils::vecToString(_cameraUp) << std::endl;
 	/*
 	_cameraUp = glm::cross(dir, right);
