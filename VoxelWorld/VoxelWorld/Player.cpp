@@ -4,7 +4,6 @@
 Player::Player(glm::vec3 pos)
 {
 	position = pos;
-	dir = { 1.0f, 0.0f, 0.0f };
 }
 
 
@@ -13,7 +12,7 @@ Player::~Player()
 }
 
 glm::vec3 Player::getCameraFront(){
-	return position+dir;
+	return{ 0, 0, 0 };
 }
 glm::vec3 Player::getCameraUp(){
 	return{ 0, 0, 0 };
