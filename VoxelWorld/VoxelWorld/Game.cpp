@@ -79,6 +79,13 @@ void Game::loadSceneToRender() {
 	vbo = std::vector<Vertex>(0);
 	w = new World();
 	w->generator(vbo);
+<<<<<<< HEAD
+	glm::vec3 initPlayerPos = { 5, 5, 5};
+	glm::vec3 initPlayerdir = { 0.1, 0, 1 };
+	player = new Player(initPlayerPos);
+	player->setDirection(initPlayerdir);
+=======
+>>>>>>> da385657fcb48dcafc9587a4ac3bf429ea7faced
 	std::cout << vbo.size() << std::endl;
 	//_gameElements.loadGameElements("./resources/scene3D.txt");	
 	_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
@@ -115,14 +122,20 @@ void Game::initCameras() {
 
 		//Initialize the view transformation matrix of the the cameras based on CameraPosition, CameraFront, Height, Width ..
 	
+<<<<<<< HEAD
+	_camera[FIST_CAMERA].setCameraPosition(glm::vec3(1.0f, 1.0f, 0.1f));
+	_camera[FIST_CAMERA].setCameraFront(glm::vec3(1.0f, 0.0f, 0.0f));
+	//_camera[FIST_CAMERA].swapProjectionMode();
+=======
 	_camera[FIST_CAMERA].setCameraPosition(glm::vec3(-4.0f, -4.0f, -4.0f));
 	_camera[FIST_CAMERA].setCameraFront(glm::vec3(0.0f, 0.0f, 0.0f));
 	_camera[FIST_CAMERA].swapProjectionMode();
+>>>>>>> da385657fcb48dcafc9587a4ac3bf429ea7faced
 
 		//The 2nd camera represents a camera at third person
 	_camera[SECOND_CAMERA].setCameraPosition(glm::vec3(4.0f, 4.0f, 4.0f));
 	_camera[SECOND_CAMERA].setCameraFront(glm::vec3(2.0f, 2.0f, 2.0f));
-	_camera[SECOND_CAMERA].swapProjectionMode();
+	//_camera[SECOND_CAMERA].swapProjectionMode();
 
 		//Set the current camera
 	_currentCamara = FIST_CAMERA;
