@@ -1,8 +1,11 @@
 #pragma once
 #include <glm\glm.hpp>
+#include <glm\gtx\rotate_vector.hpp>
+
 class Player
 {
 private:
+	glm::vec3 direction;
 	glm::vec3 position;
 	glm::vec3 min, max;
 public:
@@ -16,5 +19,6 @@ public:
 	void addMouseDeltas(float x, float y);
 	void moveDeltas(float x, float y);
 	void doJump();
+	void setDirection(glm::vec3 d);
 };
 

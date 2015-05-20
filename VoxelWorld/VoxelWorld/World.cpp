@@ -5,7 +5,7 @@ World::World(){
 	
 	width = 4;
 	height = 4;
-	depth = 4;
+	depth = 1;
 	cubs = std::vector<uint8_t>(width*height*depth, 0);
 	index = std::vector<int>(width*height*depth * 6, -1);
 	for (int x=0; x < width ;x++){
@@ -90,6 +90,10 @@ void World::insertVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex>
 //parameters: x ,y ,z positions; vertex buffer object; vector distance 
 void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 d, int id){
 	Vertex v;
+	x *= 4;
+	y *= 4;
+	z *= 4;
+	d *= 4;
 	if (d.x == d.z){
 		//push first vertex
 		v.setPosition(x, y, z);

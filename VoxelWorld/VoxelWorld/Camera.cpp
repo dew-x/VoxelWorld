@@ -99,7 +99,7 @@ void Camera::setPerspectiveProjection() {
 */
 void Camera::updateCameraMatrix() {
 	glm::vec3 cameraDirection = glm::normalize(_cameraPos - _cameraFront);
-<<<<<<< HEAD
+
 	glm::vec3 up = glm::vec3(0.0f, 0.0f, -1.0f);
 	glm::vec3 cameraRight = glm::normalize(glm::cross( cameraDirection, up));
 	_cameraUp = glm::cross(cameraDirection, cameraRight);
@@ -113,14 +113,7 @@ void Camera::updateCameraMatrix() {
 	_cameraUp = glm::cross(dir, right);
 	_viewMatrix = glm::lookAt(_cameraPos, _cameraPos+dir, _cameraUp);
 	*/
-=======
-	glm::vec3 up = glm::vec3(0.0f, 0.0f, 1.0f);
-	glm::vec3 cameraRight = glm::normalize(glm::cross(up, cameraDirection));
-	_cameraUp = glm::cross(cameraDirection, cameraRight);
 
-	_viewMatrix = glm::lookAt(_cameraPos, _cameraFront, _cameraUp);
-	std::cout << "From " << Utils::vecToString(_cameraPos) << " to " << Utils::vecToString(_cameraFront) << " - V_AT= " << Utils::vecToString(glm::normalize(_cameraFront - _cameraPos)) << " and  V_UP: " << Utils::vecToString(_cameraUp) << std::endl;
->>>>>>> da385657fcb48dcafc9587a4ac3bf429ea7faced
 }
 
 /* 

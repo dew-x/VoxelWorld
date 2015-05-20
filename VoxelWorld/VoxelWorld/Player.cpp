@@ -16,13 +16,8 @@ Player::~Player()
 }
 
 glm::vec3 Player::getCameraFront(){
-<<<<<<< HEAD
 	//std::cout << "direction : " << direction.x << " " << direction.y << " " << direction.z << "\n";
 	return direction + position;
-
-=======
-	return{ 0, 0, 0 };
->>>>>>> da385657fcb48dcafc9587a4ac3bf429ea7faced
 }
 glm::vec3 Player::getCameraUp(){
 	return{ 0, 0, 0 };
@@ -37,7 +32,6 @@ glm::vec3 Player::getMax(){
 	return{ 0, 0, 0 };
 }
 void Player::addMouseDeltas(float x, float y){
-<<<<<<< HEAD
 	float cspeed = 20;
 	//angleH = sp * x;
 	//angleV = sp * y;
@@ -50,19 +44,19 @@ void Player::addMouseDeltas(float x, float y){
 		newDirection.y = direction.y;
 	}*/
 	direction = glm::normalize(newDirection);
-=======
->>>>>>> da385657fcb48dcafc9587a4ac3bf429ea7faced
+
 }
 void Player::moveDeltas(float x, float y){
+	glm::vec2 dir = { direction.x, direction.y };
+	dir = glm::normalize(dir);
+	position.x += x;
+	position.y += y;
 }
 void Player::doJump(){
-<<<<<<< HEAD
+
 }
 
 void Player::setDirection(glm::vec3 d){
 	direction = glm::normalize(d);
 }
 
-=======
-}
->>>>>>> da385657fcb48dcafc9587a4ac3bf429ea7faced

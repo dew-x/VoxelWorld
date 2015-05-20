@@ -20,6 +20,7 @@
 #include "Camera.h"
 #include "TextureManager.h"
 #include "World.h"
+#include "Player.h"
 
 #define ORIGINAL_COLOR 0
 #define TEXTURE_COLOR 1
@@ -55,7 +56,7 @@ class Game {
 		OpenGLBuffers _openGLBuffers;	//Manage the openGL buffers		
 		InputManager _inputManager;		//Manage the input devices
 		TextureManager _textureManager;	//Manage all the data related to the different textures used in the game
-		
+		Player *player;
 		World *w;
 		std::vector<Vertex> vbo;
 

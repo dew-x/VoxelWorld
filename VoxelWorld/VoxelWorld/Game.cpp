@@ -79,13 +79,12 @@ void Game::loadSceneToRender() {
 	vbo = std::vector<Vertex>(0);
 	w = new World();
 	w->generator(vbo);
-<<<<<<< HEAD
+
 	glm::vec3 initPlayerPos = { 5, 5, 5};
 	glm::vec3 initPlayerdir = { 0.1, 0, 1 };
 	player = new Player(initPlayerPos);
 	player->setDirection(initPlayerdir);
-=======
->>>>>>> da385657fcb48dcafc9587a4ac3bf429ea7faced
+
 	std::cout << vbo.size() << std::endl;
 	//_gameElements.loadGameElements("./resources/scene3D.txt");	
 	_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
@@ -122,15 +121,11 @@ void Game::initCameras() {
 
 		//Initialize the view transformation matrix of the the cameras based on CameraPosition, CameraFront, Height, Width ..
 	
-<<<<<<< HEAD
+
 	_camera[FIST_CAMERA].setCameraPosition(glm::vec3(1.0f, 1.0f, 0.1f));
 	_camera[FIST_CAMERA].setCameraFront(glm::vec3(1.0f, 0.0f, 0.0f));
 	//_camera[FIST_CAMERA].swapProjectionMode();
-=======
-	_camera[FIST_CAMERA].setCameraPosition(glm::vec3(-4.0f, -4.0f, -4.0f));
-	_camera[FIST_CAMERA].setCameraFront(glm::vec3(0.0f, 0.0f, 0.0f));
-	_camera[FIST_CAMERA].swapProjectionMode();
->>>>>>> da385657fcb48dcafc9587a4ac3bf429ea7faced
+
 
 		//The 2nd camera represents a camera at third person
 	_camera[SECOND_CAMERA].setCameraPosition(glm::vec3(4.0f, 4.0f, 4.0f));
@@ -176,7 +171,8 @@ void Game::processInput() {
 			_gameState = GameState::EXIT;
 			break;
 		case SDL_MOUSEMOTION:
-			_inputManager.setMouseCoords(evnt.motion.x, evnt.motion.y);
+			_inputManager.setMouseCoords(evnt.motion.xrel, evnt.motion.yrel);
+			player->addMouseDeltas(evnt.motion.xrel, evnt.motion.yrel);
 			break;
 		case SDL_KEYDOWN:
 			_inputManager.pressKey(evnt.key.keysym.sym);
@@ -306,6 +302,8 @@ void Game::updateGameObjects() {
 	ExecutePlayerCommands();
 		//Execute the game logic
 	ExecuteGameLogic();
+	_camera[_currentCamara].setCameraPosition(player->getPosition());
+	_camera[_currentCamara].setCameraFront(player->getCameraFront());
 }
 
 /**
@@ -316,6 +314,9 @@ void Game::updateGameObjects() {
 */
 void Game::ExecutePlayerCommands() {
 		//Changes the draw mode
+	glm::vec2 deltaPos = { 0, 0 };
+	float deltaT = 1.0 / 60.0;
+
 	if (_inputManager.isKeyPressed(SDLK_t)){
 		_drawMode = (_drawMode + 1) % DRAW_MODE;
 		std::cout << "DRAWMODE" << _drawMode << std::endl;
@@ -328,17 +329,22 @@ void Game::ExecutePlayerCommands() {
 	
 		//Add the additional keys pressed by the player for moving/changing the state of the player object
 
-	if (_inputManager.isKeyPressed(SDLK_w)){
-		_camera[_currentCamara].move(0);
+	if (_inputManager.isKeyDown(SDLK_w)){
+		//_camera[_currentCamara].move(0);
+		deltaPos.y += 1;
 	}
-	if (_inputManager.isKeyPressed(SDLK_s)){
-		_camera[_currentCamara].move(2);
+	if (_inputManager.isKeyDown(SDLK_s)){
+		deltaPos.y -= 1;
 	}
-	if (_inputManager.isKeyPressed(SDLK_d)){
-		_camera[_currentCamara].move(1);
+	if (_inputManager.isKeyDown(SDLK_d)){
+		deltaPos.x += 1;
 	}
-	if (_inputManager.isKeyPressed(SDLK_a)){
-		_camera[_currentCamara].move(3);
+	if (_inputManager.isKeyDown(SDLK_a)){
+		deltaPos.x -= 1;
+	}
+	if (deltaPos.x != 0 || deltaPos.y != 0){
+		deltaPos = glm::normalize(deltaPos)*deltaT;
+		player->moveDeltas(deltaPos.x, deltaPos.y);
 	}
 }
 
