@@ -19,6 +19,9 @@ glm::vec3 Player::getCameraFront(){
 	//std::cout << "direction : " << direction.x << " " << direction.y << " " << direction.z << "\n";
 	return direction + position;
 }
+glm::vec3 Player::getDirection(){
+	return glm::normalize(direction);
+}
 glm::vec3 Player::getCameraUp(){
 	return{ 0, 0, 0 };
 }
@@ -47,10 +50,15 @@ void Player::addMouseDeltas(float x, float y){
 
 }
 void Player::moveDeltas(float x, float y){
-	glm::vec2 dir = { direction.x, direction.y };
+	glm::vec3 dir = { direction.x, direction.y, 0 };
 	dir = glm::normalize(dir);
-	position.x += x;
-	position.y += y;
+	dir *= x;
+	glm::vec3 dirP = { -direction.y, direction.x , 0};
+	dirP = glm::normalize(dirP);
+	dirP *= y;
+	dir += dirP;
+	dir = glm::normalize(dir);
+	position += (dir*0.1f);
 }
 void Player::doJump(){
 

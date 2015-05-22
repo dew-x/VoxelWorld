@@ -38,6 +38,7 @@ public:
 	void swapProjectionMode();
 		//Methods for updating the Camera values
 	void updateCameraMatrix();
+	void addCameraPosition(glm::vec3 & cameraPos);
 	void setCameraFront(glm::vec3 & cameraFront);
 	void setCameraPosition(glm::vec3 & cameraPos);
 	void setResolution(float screenHeight, float screenWidth);

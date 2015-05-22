@@ -55,6 +55,10 @@ void Camera::setCameraPosition(glm::vec3 & cameraPos) {
 	updateCameraMatrix();
 }
 
+void Camera::addCameraPosition(glm::vec3 & cameraPos) {
+	_cameraPos += cameraPos;
+	updateCameraMatrix();
+}
 /*
 * Replace the camera front and update the view transformation matrix
 * @param cameraFront is the new position of the camera

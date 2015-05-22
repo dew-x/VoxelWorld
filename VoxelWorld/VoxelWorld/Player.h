@@ -12,6 +12,7 @@ public:
 	Player(glm::vec3 pos);
 	~Player();
 	glm::vec3 getCameraFront();
+	glm::vec3 getDirection();
 	glm::vec3 getCameraUp();
 	glm::vec3 getPosition();
 	glm::vec3 getMin();

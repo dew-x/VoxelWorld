@@ -331,19 +331,19 @@ void Game::ExecutePlayerCommands() {
 
 	if (_inputManager.isKeyDown(SDLK_w)){
 		//_camera[_currentCamara].move(0);
-		deltaPos.y += 1;
-	}
-	if (_inputManager.isKeyDown(SDLK_s)){
-		deltaPos.y -= 1;
-	}
-	if (_inputManager.isKeyDown(SDLK_d)){
-		deltaPos.x += 1;
-	}
-	if (_inputManager.isKeyDown(SDLK_a)){
 		deltaPos.x -= 1;
 	}
+	if (_inputManager.isKeyDown(SDLK_s)){
+		deltaPos.x += 1;
+	}
+	if (_inputManager.isKeyDown(SDLK_d)){
+		deltaPos.y += 1;
+	}
+	if (_inputManager.isKeyDown(SDLK_a)){
+		deltaPos.y -= 1;
+	}
 	if (deltaPos.x != 0 || deltaPos.y != 0){
-		deltaPos = glm::normalize(deltaPos)*deltaT;
+		//deltaPos = glm::normalize(deltaPos)*deltaT;
 		player->moveDeltas(deltaPos.x, deltaPos.y);
 	}
 }
