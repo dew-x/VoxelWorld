@@ -1,6 +1,7 @@
 #pragma once
 #include <glm\glm.hpp>
 #include <glm\gtx\rotate_vector.hpp>
+#include "World.h"
 
 class Player
 {
@@ -18,8 +19,9 @@ public:
 	glm::vec3 getMin();
 	glm::vec3 getMax();
 	void addMouseDeltas(float x, float y);
-	void moveDeltas(float x, float y);
+	void moveDeltas(float x, float y, World *w);
 	void doJump();
+	void addGravity(World *w);
 	void setDirection(glm::vec3 d);
 };
 

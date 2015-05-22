@@ -28,7 +28,7 @@ World::~World(){
 inline unsigned World::coord(unsigned x, unsigned y, unsigned z){ return depth*(x*height + y) + z; }
 
 //comprovate if is inside of the cube in de x, y,z position
-inline bool World::inside(unsigned x, unsigned y, unsigned z){ return (0 <= x && x < width) && (0 <= y && y < height) && (0 <= z && z < depth); }
+inline bool World::inside(int x, int y, int z){ return (0 <= x && x < width) && (0 <= y && y < height) && (0 <= z && z < depth); }
 
 //comprovate if cube in position exists
 bool World::isEmpty(unsigned x, unsigned y, unsigned z){ return cubs[coord(x, y, z)] == 0; }
@@ -113,14 +113,14 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x+d.x, y, z + d.z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
-		v.setUV(1.0f, 0.0f);
+		v.setUV(1.0f, 1.0f);
 		vbo.push_back(v);
 
 		//push fourth vertex 
 		v.setPosition(x + d.x, y, z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
-		v.setUV(1.0f, 1.0f);
+		v.setUV(1.0f, 0.0f);
 		vbo.push_back(v);
 	}else if (d.y == d.z){
 		//push first vertex
@@ -179,4 +179,17 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setUV(0.0f, 0.0f);
 		vbo.push_back(v);
 	}
+}
+
+bool World::fits(glm::vec3 min, glm::vec3 max){
+	min = min / CUBESIZE;
+	max = max / CUBESIZE;
+	for (int i = floor(min.x); i <= ceil(max.x);i++){
+		for (int j = floor(min.y); j <= ceil(max.y); j++){
+			for (int k = floor(min.z); k <= ceil(max.z); k++){
+				if (inside(i, j, k) && cubs[coord(i, j, k)] != 0) return false;
+			}
+		}
+	}
+	return true;
 }

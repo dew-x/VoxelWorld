@@ -80,8 +80,8 @@ void Game::loadSceneToRender() {
 	w = new World();
 	w->generator(vbo);
 
-	glm::vec3 initPlayerPos = { 20, 20, 5};
-	glm::vec3 initPlayerdir = { 0.1, 0, 1 };
+	glm::vec3 initPlayerPos = { 3, 3, 15};
+	glm::vec3 initPlayerdir = { -0.1, -0.1, 0 };
 	player = new Player(initPlayerPos);
 	player->setDirection(initPlayerdir);
 
@@ -344,8 +344,9 @@ void Game::ExecutePlayerCommands() {
 	}
 	if (deltaPos.x != 0 || deltaPos.y != 0){
 		//deltaPos = glm::normalize(deltaPos)*deltaT;
-		player->moveDeltas(deltaPos.x, deltaPos.y);
+		player->moveDeltas(deltaPos.x, deltaPos.y, w);
 	}
+	player->addGravity(w);
 }
 
 /*

@@ -7,19 +7,20 @@
 #include <glm/glm.hpp>
 #include "Vertex.h"
 
-#define CUBESIZE 2
+#define CUBESIZE 2.0f
 class World{
-	unsigned width;
-	unsigned height;
-	unsigned depth;
 	std::vector<uint8_t> cubs;
 	std::vector<int> index;
 public:
+	unsigned width;
+	unsigned height;
+	unsigned depth;
 	World();
 	~World();
 	inline unsigned coord(unsigned x, unsigned y, unsigned z);
-	inline bool inside(unsigned x, unsigned y,unsigned z);
+	inline bool inside(int x, int y,int z);
 	void generator(std::vector<Vertex> &vbo);
+	bool fits(glm::vec3 min, glm::vec3 max);
 	void deleteVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex> &vbo);
 	void insertVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex> &vbo);
 	bool isEmpty(unsigned x, unsigned y, unsigned z);

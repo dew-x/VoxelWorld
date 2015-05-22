@@ -29,10 +29,10 @@ glm::vec3 Player::getPosition(){
 	return position;
 }
 glm::vec3 Player::getMin(){
-	return{ 0, 0, 0 };
+	return{ position.x-0.1, position.y-0.1, position.z-0.9};
 }
 glm::vec3 Player::getMax(){
-	return{ 0, 0, 0 };
+	return{ position.x+0.1, position.y+0.1, position.z+0.1 };
 }
 void Player::addMouseDeltas(float x, float y){
 	float cspeed = 20;
@@ -49,7 +49,7 @@ void Player::addMouseDeltas(float x, float y){
 	direction = glm::normalize(newDirection);
 
 }
-void Player::moveDeltas(float x, float y){
+void Player::moveDeltas(float x, float y, World *w){
 	glm::vec3 dir = { direction.x, direction.y, 0 };
 	dir = glm::normalize(dir);
 	dir *= x;
@@ -58,7 +58,11 @@ void Player::moveDeltas(float x, float y){
 	dirP *= y;
 	dir += dirP;
 	dir = glm::normalize(dir);
+	glm::vec3 oldPosition = position;
 	position += (dir*0.1f);
+	glm::vec3 ofsetWorld = { w->width*CUBESIZE, w->height*CUBESIZE, w->depth*CUBESIZE };
+	if (!w->fits(getMin(),getMax())) position = oldPosition;
+	//if (!w->fits(ofsetWorld - getMax(), ofsetWorld - getMin())) position = oldPosition;
 }
 void Player::doJump(){
 
@@ -66,5 +70,11 @@ void Player::doJump(){
 
 void Player::setDirection(glm::vec3 d){
 	direction = glm::normalize(d);
+}
+
+void Player::addGravity(World *w){
+	glm::vec3 oldPosition = position;
+	position.z -= 0.1;
+	if (!w->fits(getMin(), getMax())) position = oldPosition;
 }
 
