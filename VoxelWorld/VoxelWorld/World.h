@@ -7,6 +7,7 @@
 #include <glm/glm.hpp>
 #include "Vertex.h"
 
+#define CUBESIZE 2
 class World{
 	unsigned width;
 	unsigned height;

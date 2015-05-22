@@ -3,15 +3,15 @@
 
 World::World(){
 	
-	width = 4;
-	height = 4;
-	depth = 1;
+	width = 40;
+	height = 40;
+	depth = 40;
 	cubs = std::vector<uint8_t>(width*height*depth, 0);
 	index = std::vector<int>(width*height*depth * 6, -1);
 	for (int x=0; x < width ;x++){
 		for (int y = 0;y < height;y++){
 			for (int z = 0; z <depth ;z++){
-				if (z <= 128) cubs[coord(x, y, z)] = 1;
+				if (!(x<=z && y <=z)) cubs[coord(x, y, z)] = 1;
 				else cubs[coord(x, y, z)] = 0;
 			}
 		}
@@ -90,10 +90,10 @@ void World::insertVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex>
 //parameters: x ,y ,z positions; vertex buffer object; vector distance 
 void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 d, int id){
 	Vertex v;
-	x *= 4;
-	y *= 4;
-	z *= 4;
-	d *= 4;
+	x *= CUBESIZE;
+	y *= CUBESIZE;
+	z *= CUBESIZE;
+	d *= CUBESIZE;
 	if (d.x == d.z){
 		//push first vertex
 		v.setPosition(x, y, z);

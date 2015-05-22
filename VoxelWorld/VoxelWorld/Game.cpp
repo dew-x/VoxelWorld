@@ -80,7 +80,7 @@ void Game::loadSceneToRender() {
 	w = new World();
 	w->generator(vbo);
 
-	glm::vec3 initPlayerPos = { 5, 5, 5};
+	glm::vec3 initPlayerPos = { 20, 20, 5};
 	glm::vec3 initPlayerdir = { 0.1, 0, 1 };
 	player = new Player(initPlayerPos);
 	player->setDirection(initPlayerdir);
