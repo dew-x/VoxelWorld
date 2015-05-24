@@ -96,7 +96,7 @@ void OpenGLBuffers::initializeVertexArrayObject(GLSLProgram & _colorProgram) {
 	The fifth argument, sizeof(Vertex), says that the information in the buffer vertex object will be composed by elements of the type Vertex
 	The sixth argument, (void*)offsetof(Vertex, color), says where starts this kind of information in the vertex buffer object
 	*/
-	glVertexAttribPointer(_colorProgram.getAttribLocation("vertexId"), 1, GL_UNSIGNED_INT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, id));
+	glVertexAttribPointer(_colorProgram.getAttribLocation("vertexId"), 1, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, id));
 
 	/* The vertexColor attribute refers to the color in RGBA components
 	The first argument is the shader variable that the data should be sent to

@@ -108,8 +108,9 @@ void Game::loadGameTextures() {
 			currentGameObject = _gameElements.getGameElement(i);
 			(_gameElements.getGameElement(i))._textureID = _textureManager.getTextureID(currentGameObject._textureFile);
 		}*/
-	tex = _textureManager.getTextureID("resources/textures/floor.jpg");
-	
+	tex = _textureManager.getTextureID("resources/textures/minecrafttexture.png");
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	
 }
 

@@ -42,6 +42,13 @@ void World::generator(std::vector<Vertex> &vbo){
 	int numvertex = 0;
 	int xp, yp, zp;
 	glm::vec3 director;
+	// skybox
+	calcVertex(-10, -10, -10, vbo, glm::vec3(0, height+20, depth+20), -1);
+	calcVertex(-10, -10, -10, vbo, glm::vec3(width+20, 0, depth + 20), -1);
+	calcVertex(-10, -10, -10, vbo, glm::vec3(width + 20, height + 20,0), -1);
+	calcVertex(10 + width, 10 + height, 10 + depth, vbo, glm::vec3(0, -int(height) - 20, -int(depth) - 20), -1);
+	calcVertex(10 + width, 10 + height, 10 + depth, vbo, glm::vec3(-int(width) - 20, 0, -int(depth) - 20), -1);
+	calcVertex(10 + width, 10 + height, 10 + depth, vbo, glm::vec3(-int(width) - 20, -int(height) - 20, 0), -1);
 	//xPosition = i/(depth*height)
 	//yPosition = (i / depth)%height
 	//zPosition = i%depth

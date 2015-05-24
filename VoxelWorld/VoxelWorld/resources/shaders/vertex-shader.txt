@@ -3,7 +3,7 @@
 //The vertex shader receives the 3D position and the UV texture coordinates of the current vector
 //This version do not use the color attribute of the vertices because the color is defined at object level
 in vec3 vertexPosition;
-in int vertexId;
+in float vertexId;
 in vec4 vertexColor;
 in vec2 vertexUV;
 in vec3 vertexNormal;
@@ -31,22 +31,44 @@ void main() {
 	gl_Position = projectionMatrix*viewMatrix*modelMatrix*vec4(vertexPosition, 1);
 
 		//Compute the color that has to be send to the next stage. In this case, the color remains equally
-	if (vertexId>=0){
-		fragmentColor=vertexColor;
+	if (vertexId>=-1){
+		if (vertexId==1) {
+			fragmentColor=vertexColor;
+		} else if(vertexId==-1) {
+			fragmentColor=vec4(0,0,0,1);
+		} else {
+			fragmentColor=vec4(1,1,1,1);
+		}
 	} else {
 		fragmentColor = objectColor;
 	}
 		//Compute the texture data that has to be send to next stage
 			//OpenGL expects the 0.0 coordinate on the y-axis to be on the bottom side of the image, but images usually have 0.0 at the top of the y-axis
 			//Moreover, we multiple by a factor that manage if the texture has to be repeated or not
-	fragmentTextureCoordinates=vec2(vertexUV.x,1.0-vertexUV.y)*textureScaleFactor;
+	int textID=0;
+	if (vertexId==-1) {
+		if (vertexNormal.x==1)	textID=14;
+		else if (vertexNormal.x==-1)	textID=13;
+		else if (vertexNormal.y==1)	textID=12;
+		else if (vertexNormal.y==-1)	textID=11;
+		else if (vertexNormal.z==1)	textID=10;
+		else if (vertexNormal.z==-1)	textID=9;
+	} else {
+		if (vertexNormal.x==0 && vertexNormal.y==0) {
+			if (vertexNormal.z>0) textID=int((vertexId-1)*3);
+			else textID=int((vertexId-1)*3+2);
+		}
+		else if (vertexNormal.y==0 && vertexNormal.z==0) textID=int(((vertexId-1)*3)+1);
+		else textID=int(((vertexId-1)*3)+1);
+	}
+	//textID=14;
+	int textY=int(textID/4);
+	int textX=int(textID%4);
+	fragmentTextureCoordinates=vec2(vertexUV.x/4.0+textX/4.0,(1.0-vertexUV.y)/4.0+textY/4.0)*textureScaleFactor;
 
 		//Adjust the normals
-	if (vertexId<0) {
-		fragmentNormal = modelNormalMatrix * vertexNormal;
-	} else{  
-		fragmentNormal = vertexNormal;  
-	}
+	fragmentNormal = modelNormalMatrix * vertexNormal;
+	
 		//We need the fragment position in the worlds coordinates, this is why the current position only uses the model transformation matrix
 	fragmentPosition=vec3(modelMatrix * vec4(vertexPosition, 1.0f));
 }
