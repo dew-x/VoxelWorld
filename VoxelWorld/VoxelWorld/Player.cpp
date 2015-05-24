@@ -8,6 +8,7 @@ float sgn(float a){
 Player::Player(glm::vec3 pos)
 {
 	position = pos;
+	numCubs = 0;
 }
 
 
@@ -74,7 +75,11 @@ void Player::setDirection(glm::vec3 d){
 
 void Player::addGravity(World *w){
 	glm::vec3 oldPosition = position;
-	position.z -= 0.1;
+	position.z -= 0.98;
 	if (!w->fits(getMin(), getMax())) position = oldPosition;
 }
+
+void Player::addCub(){ numCubs++; }
+
+void Player::elimCub(){if(numCubs > 0) numCubs--; }
 

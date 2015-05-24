@@ -9,6 +9,7 @@ private:
 	glm::vec3 direction;
 	glm::vec3 position;
 	glm::vec3 min, max;
+	int numCubs;
 public:
 	Player(glm::vec3 pos);
 	~Player();
@@ -23,5 +24,8 @@ public:
 	void doJump();
 	void addGravity(World *w);
 	void setDirection(glm::vec3 d);
+	void destroyCube();
+	void addCub();
+	void elimCub();
 };
 

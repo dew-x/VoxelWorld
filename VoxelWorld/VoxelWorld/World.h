@@ -25,5 +25,9 @@ public:
 	void insertVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex> &vbo);
 	bool isEmpty(unsigned x, unsigned y, unsigned z);
 	void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 d, int id);
+	void eliminateCube(glm::vec3 v);
+	void putCube(glm::vec3 v);
+	int cubeTipe(glm::vec3 v);
+	glm::vec3 transformLookAt(glm::vec3 lookAt);
 };
 

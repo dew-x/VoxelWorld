@@ -3,15 +3,19 @@
 
 World::World(){
 	
-	width = 40;
-	height = 40;
-	depth = 40;
+	width = 256;
+	height =256;
+	depth = 256;
 	cubs = std::vector<uint8_t>(width*height*depth, 0);
 	index = std::vector<int>(width*height*depth * 6, -1);
+	int n = 50;
 	for (int x=0; x < width ;x++){
 		for (int y = 0;y < height;y++){
 			for (int z = 0; z <depth ;z++){
-				if (!(x<=z && y <=z)) cubs[coord(x, y, z)] = 1;
+				if (z < depth/2){
+					if (!(x <= z && y <= z)) cubs[coord(x, y, z)] = 1;
+					else cubs[coord(x, y, z)] = 0;
+				}
 				else cubs[coord(x, y, z)] = 0;
 			}
 		}
@@ -192,4 +196,24 @@ bool World::fits(glm::vec3 min, glm::vec3 max){
 		}
 	}
 	return true;
+}
+
+void World::eliminateCube(glm::vec3 v) {
+	cubs[coord(v.x, v.y, v.z)] = 0;
+}
+
+void World::putCube(glm::vec3 v){
+	cubs[coord(v.x, v.y, v.z)] = 1;
+}
+
+int World::cubeTipe(glm::vec3 v){ 
+	return cubs[coord(v.x, v.y, v.z)]; 
+}
+
+glm::vec3 World::transformLookAt(glm::vec3 lookAt){
+	glm::vec3 v;
+	v.x = ceil(lookAt.x/CUBESIZE);
+	v.y = ceil(lookAt.y/CUBESIZE);
+	v.z = ceil(lookAt.z/CUBESIZE);
+	return v;
 }

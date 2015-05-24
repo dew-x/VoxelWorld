@@ -80,7 +80,7 @@ void Game::loadSceneToRender() {
 	w = new World();
 	w->generator(vbo);
 
-	glm::vec3 initPlayerPos = { 3, 3, 15};
+	glm::vec3 initPlayerPos = { (w->width*CUBESIZE)/2, (w->height*CUBESIZE)/2, ((w->depth*CUBESIZE)/2)+1};
 	glm::vec3 initPlayerdir = { -0.1, -0.1, 0 };
 	player = new Player(initPlayerPos);
 	player->setDirection(initPlayerdir);
@@ -315,6 +315,7 @@ void Game::updateGameObjects() {
 void Game::ExecutePlayerCommands() {
 		//Changes the draw mode
 	glm::vec2 deltaPos = { 0, 0 };
+	glm::vec3 lookAt = w->transformLookAt(player->getCameraFront());
 	float deltaT = 1.0 / 60.0;
 
 	if (_inputManager.isKeyPressed(SDLK_t)){
@@ -341,6 +342,18 @@ void Game::ExecutePlayerCommands() {
 	}
 	if (_inputManager.isKeyDown(SDLK_a)){
 		deltaPos.y -= 1;
+	}
+	if (_inputManager.isKeyPressed(SDLK_f)){
+		if (w->cubeTipe(lookAt) == 1){
+			w->eliminateCube(lookAt);
+			player->addCub();
+		}
+	}
+	if (_inputManager.isKeyPressed(SDLK_g)){
+		if (w->cubeTipe(lookAt) == 0){
+			w->putCube(lookAt);
+			player->elimCub();
+		}
 	}
 	if (deltaPos.x != 0 || deltaPos.y != 0){
 		//deltaPos = glm::normalize(deltaPos)*deltaT;
