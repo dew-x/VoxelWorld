@@ -15,7 +15,8 @@ Game::Game(std::string windowTitle, int screenWidth, int screenHeight, bool enab
 	_gameState(GameState::INIT),
 	_fpsLimiter(enableLimiterFPS, maxFPS, printFPS),
 	_currentCamara(FIST_CAMERA),
-	_drawMode(TEXTURE_COLOR){	
+	_drawMode(TEXTURE_COLOR),
+	_lightMode(0){	
 }
 
 /**
@@ -67,6 +68,7 @@ void Game::loadShaders() {
 	_colorProgram.addAttribute("vertexId");
 	_colorProgram.addAttribute("vertexColor");
 	_colorProgram.addAttribute("vertexUV");
+	_colorProgram.addAttribute("vertexNormal");
 		//Link the compiled shaders
 	_colorProgram.linkShaders();
 }
@@ -207,6 +209,20 @@ void Game::drawGame() {
 	GLint textureDataLocation = _colorProgram.getUniformLocation("textureData");
 	GLint textureScaleFactorLocation = _colorProgram.getUniformLocation("textureScaleFactor");	
 	GLint modelNormalMatrix = _colorProgram.getUniformLocation("modelNormalMatrix");
+	// light
+	GLint lightingEnabled = _colorProgram.getUniformLocation("lightingEnabled");
+	GLint isALightSource = _colorProgram.getUniformLocation("isALightSource");
+	GLint lightPosition = _colorProgram.getUniformLocation("lightPosition");
+	GLint viewerPosition = _colorProgram.getUniformLocation("viewerPosition");
+	GLint materialAmbient = _colorProgram.getUniformLocation("material.ambient");
+	GLint materialDifusse = _colorProgram.getUniformLocation("material.diffuse");
+	GLint materialSpecular = _colorProgram.getUniformLocation("material.specular");
+	GLint materialShininess = _colorProgram.getUniformLocation("material.shininess");
+	GLint lightAmbient = _colorProgram.getUniformLocation("lightColor.ambient");
+	GLint lightDifusse = _colorProgram.getUniformLocation("lightColor.diffuse");
+	GLint lightSpecular = _colorProgram.getUniformLocation("lightColor.specular");
+	GLint lightShininess = _colorProgram.getUniformLocation("lightColor.shininess");
+
 
 		//Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -246,6 +262,30 @@ void Game::drawGame() {
 	glUniform4fv(newColorUniform, 1, glm::value_ptr(colortmp));
 	//glUniform1i(textureDataLocation,0);		//This line is not needed if we use only 1 texture, it is sending the GL_TEXTURE0
 	glUniform1i(drawModeUniform, _drawMode);
+	// light
+	glUniform1i(lightingEnabled, _lightMode);
+	glUniform1i(isALightSource, 0);
+	glm::vec3 lightPositionV = { (w->width*CUBESIZE) / 2, (w->height*CUBESIZE) / 2, (w->depth*CUBESIZE)*1.2 };
+	glUniform3f(lightPosition, lightPositionV.x, lightPositionV.y, lightPositionV.z);
+	glm::vec3 playerPos = player->getPosition();
+	glUniform3f(viewerPosition, playerPos.x, playerPos.y, playerPos.z);
+	// 0.05	0.05	0.05	0.5	0.5	0.5	0.7	0.7	0.7	.078125
+	glm::vec3 materialAmbientV = { 0.2,0.2,0.2 };
+	glm::vec3 materialDifusseV = { 0.5,	0.5,	0.5 };
+	glm::vec3 materialSpecularV = { 0.7,	0.7,	0.7 };
+	float materialShine = 0.078125f;
+	glUniform3f(materialAmbient, materialAmbientV.x, materialAmbientV.y, materialAmbientV.z);
+	glUniform3f(materialDifusse, materialDifusseV.x, materialDifusseV.y, materialDifusseV.z);
+	glUniform3f(materialSpecular, materialSpecularV.x, materialSpecularV.y, materialSpecularV.z);
+	glUniform1f(materialShininess, materialShine);
+	glm::vec3 lightAmbientV = { 1, 1, 1 };
+	glm::vec3 lightDifusseV = { 1, 1, 1 };
+	glm::vec3 lightSpecularV = { 0, 0, 0 };
+	float lightShine = 1;
+	glUniform3f(lightAmbient, lightAmbientV.x, lightAmbientV.y, lightAmbientV.z);
+	glUniform3f(lightDifusse, lightDifusseV.x, lightDifusseV.y, lightDifusseV.z);
+	glUniform3f(lightSpecular, lightSpecularV.x, lightSpecularV.y, lightSpecularV.z);
+	glUniform1f(lightShininess, lightShine);
 	_openGLBuffers.drawData(0, vbo.size());
 		//Each object MUST BE RENDERED based on the position, rotation and scale
 	/*for (int i = 0; i < _gameElements.getNumGameElements(); i++) {		
@@ -331,6 +371,9 @@ void Game::ExecutePlayerCommands() {
 		_currentCamara = (_currentCamara + 1) % NUM_CAMERAS;
 	}
 	
+	if (_inputManager.isKeyPressed(SDLK_l)){
+		_lightMode = (_lightMode + 1) % 2;
+	}
 		//Add the additional keys pressed by the player for moving/changing the state of the player object
 
 	if (_inputManager.isKeyDown(SDLK_w)){

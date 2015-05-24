@@ -42,8 +42,11 @@ void main() {
 	fragmentTextureCoordinates=vec2(vertexUV.x,1.0-vertexUV.y)*textureScaleFactor;
 
 		//Adjust the normals
-	fragmentNormal = modelNormalMatrix * vertexNormal;  
-
+	if (vertexId<0) {
+		fragmentNormal = modelNormalMatrix * vertexNormal;
+	} else{  
+		fragmentNormal = vertexNormal;  
+	}
 		//We need the fragment position in the worlds coordinates, this is why the current position only uses the model transformation matrix
 	fragmentPosition=vec3(modelMatrix * vec4(vertexPosition, 1.0f));
 }

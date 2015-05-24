@@ -28,7 +28,7 @@ struct Vertex {
 	GLuint id;
 	ColorRGBA8 color;
 	UV uv;
-	glm::vec3 normal;
+	Position normal;
 
 	void setPosition(GLfloat  x, GLfloat  y, GLfloat  z) {
 		position.x = x;
@@ -52,7 +52,7 @@ struct Vertex {
 		this->id = id;
 	}
 
-	void setNormal(float x, float y, float z){
+	void setNormal(GLfloat x, GLfloat y, GLfloat z){
 		normal.x = x;
 		normal.y = y;
 		normal.z = z;

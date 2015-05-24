@@ -47,6 +47,7 @@ class Game {
 			//Attributes	
 		std::string _windowTitle;		//Window Title
 		int _drawMode;					//Define how the color is computed
+		int _lightMode;
 		int _screenWidth;				//Screen width in pixels				
 		int _screenHeight;				//Screen height in pixels				
 		GameState _gameState;			//It describes the game state				
