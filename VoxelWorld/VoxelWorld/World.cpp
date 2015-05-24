@@ -98,12 +98,16 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 	y *= CUBESIZE;
 	z *= CUBESIZE;
 	d *= CUBESIZE;
+	float normal;
 	if (d.x == d.z){
+		if (d.x > 0) normal = -1;
+		else normal = 1;
 		//push first vertex
 		v.setPosition(x, y, z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
 		v.setUV(0.0f, 0.0f);
+		v.setNormal(0.0,normal, 0.0);
 		vbo.push_back(v);
 
 		//push second vertex
@@ -111,6 +115,7 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
 		v.setUV(0.0f, 1.0f);
+		v.setNormal(0.0, normal, 0.0);
 		vbo.push_back(v);
 
 		//push third vertex
@@ -118,6 +123,7 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
 		v.setUV(1.0f, 1.0f);
+		v.setNormal(0.0, normal, 0.0);
 		vbo.push_back(v);
 
 		//push fourth vertex 
@@ -125,13 +131,17 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
 		v.setUV(1.0f, 0.0f);
+		v.setNormal(0.0, normal, 0.0);
 		vbo.push_back(v);
 	}else if (d.y == d.z){
+		if (d.z > 0) normal = -1;
+		else normal = 1;
 		//push first vertex
 		v.setPosition(x, y, z);
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
 		v.setUV(1.0f, 0.0f);
+		v.setNormal(normal, 0.0, 0.0);
 		vbo.push_back(v);
 
 		//push second vertex
@@ -139,6 +149,7 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
 		v.setUV(0.0f, 0.0f);
+		v.setNormal(normal, 0.0, 0.0);
 		vbo.push_back(v);
 
 		//push third vertex
@@ -146,6 +157,7 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
 		v.setUV(0.0f, 1.0f);
+		v.setNormal(normal, 0.0, 0.0);
 		vbo.push_back(v);
 
 		//push fourth vertex 
@@ -153,13 +165,17 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
 		v.setUV(1.0f, 1.0f);
+		v.setNormal(normal, 0.0, 0.0);
 		vbo.push_back(v);
 	}else{
+		if (d.y > 0) normal = -1;
+		else normal = 1;
 		//push first vertex
 		v.setPosition(x, y, z);
 		v.setId(id);
 		v.setColor(0, 0, 255, 255);
 		v.setUV(0.0f, 1.0f);
+		v.setNormal(0.0, 0.0, normal);
 		vbo.push_back(v);
 
 		//push second vertex
@@ -167,6 +183,7 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setId(id);
 		v.setColor(0, 0, 255, 255);
 		v.setUV(1.0f, 1.0f);
+		v.setNormal(0.0, 0.0, normal);
 		vbo.push_back(v);
 
 		//push third vertex
@@ -174,6 +191,7 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setId(id);
 		v.setColor(0, 0, 255, 255);
 		v.setUV(1.0f, 0.0f);
+		v.setNormal(0.0, 0.0, normal);
 		vbo.push_back(v);
 
 		//push fourth vertex 
@@ -181,6 +199,7 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setId(id);
 		v.setColor(0, 0, 255, 255);
 		v.setUV(0.0f, 0.0f);
+		v.setNormal(0.0, 0.0, normal);
 		vbo.push_back(v);
 	}
 }
@@ -212,8 +231,8 @@ int World::cubeTipe(glm::vec3 v){
 
 glm::vec3 World::transformLookAt(glm::vec3 lookAt){
 	glm::vec3 v;
-	v.x = ceil(lookAt.x/CUBESIZE);
-	v.y = ceil(lookAt.y/CUBESIZE);
-	v.z = ceil(lookAt.z/CUBESIZE);
+	v.x = floor(lookAt.x/CUBESIZE);
+	v.y = floor(lookAt.y/CUBESIZE);
+	v.z = floor(lookAt.z/CUBESIZE);
 	return v;
 }
