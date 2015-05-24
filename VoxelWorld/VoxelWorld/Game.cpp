@@ -206,6 +206,7 @@ void Game::drawGame() {
 	GLuint newColorUniform = _colorProgram.getUniformLocation("objectColor");
 	GLint textureDataLocation = _colorProgram.getUniformLocation("textureData");
 	GLint textureScaleFactorLocation = _colorProgram.getUniformLocation("textureScaleFactor");	
+	GLint modelNormalMatrix = _colorProgram.getUniformLocation("modelNormalMatrix");
 
 		//Clear the color and depth buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -238,6 +239,8 @@ void Game::drawGame() {
 	glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
 	glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getViewMatrix()));
 	glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getProjectionMatrix()));
+	glm::mat3 normalMatrix = glm::mat3(glm::transpose(glm::inverse(modelMatrix)));
+	glUniformMatrix3fv(modelNormalMatrix, 1, GL_FALSE, glm::value_ptr(normalMatrix));
 	glm::vec4 colortmp = { 1.0f, 1.0f, 1.0f, -1.0f };
 	glUniform2f(textureScaleFactorLocation, 1.0f, 1.0f);
 	glUniform4fv(newColorUniform, 1, glm::value_ptr(colortmp));
