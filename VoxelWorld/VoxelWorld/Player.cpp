@@ -8,7 +8,7 @@ float sgn(float a){
 Player::Player(glm::vec3 pos)
 {
 	position = pos;
-	numCubs = 0;
+	cubeTypeInHand = 1;
 	acceleration = { 0, 0, -0.3 };
 }
 
@@ -80,9 +80,9 @@ void Player::addGravity(World *w){
 	if (!w->fits3(position)) position = oldPosition;
 }
 
-void Player::addCub(){ numCubs++; }
-
-void Player::elimCub(){if(numCubs > 0) numCubs--; }
-
 void Player::changeAcceleration(){ if (acceleration.z == GRAVITY) acceleration.z = -GRAVITY; }
+
+int Player::getCubeType(){ return cubeTypeInHand; }
+
+void Player::changeCubeType(int type){ cubeTypeInHand = type;}
 

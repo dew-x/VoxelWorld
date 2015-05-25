@@ -342,7 +342,7 @@ bool World::removeCube(glm::vec3 position, glm::vec3 direction) {
 	return false;
 }
 
-bool World::putCube(glm::vec3 position, glm::vec3 direction){
+bool World::putCube(glm::vec3 position, glm::vec3 direction, int cubeTipe){
 	//cubs[coord(v.x, v.y, v.z)] = 1;
 	glm::vec3 cpos;
 	int face;
@@ -350,7 +350,7 @@ bool World::putCube(glm::vec3 position, glm::vec3 direction){
 	if (face != -1){
 		cpos += axis[face];
 		if (inside(cpos.x, cpos.y, cpos.z) && cubs[coord(cpos.x, cpos.y, cpos.z)] == 0) {
-			cubs[coord(cpos.x, cpos.y, cpos.z)] = 1;
+			cubs[coord(cpos.x, cpos.y, cpos.z)] = cubeTipe;
 			return true;
 		}
 	}

@@ -32,7 +32,7 @@ public:
 	bool isEmpty(unsigned x, unsigned y, unsigned z);
 	void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 d, int id);
 	bool removeCube(glm::vec3 position, glm::vec3 direction);
-	bool putCube(glm::vec3 position, glm::vec3 direction);
+	bool putCube(glm::vec3 position, glm::vec3 direction, int cubeTipe);
 	int cubeTipe(glm::vec3 v);
 	glm::vec3 pointToGrid(glm::vec3 position);
 	void raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm::vec3 &colisonPos, int &face);

@@ -11,7 +11,7 @@ private:
 	glm::vec3 direction;
 	glm::vec3 position;
 	glm::vec3 min, max;
-	int numCubs;
+	int cubeTypeInHand;
 	glm::vec3 acceleration;
 public:
 	Player(glm::vec3 pos);
@@ -27,8 +27,8 @@ public:
 	void addGravity(World *w);
 	void setDirection(glm::vec3 d);
 	void destroyCube();
-	void addCub();
-	void elimCub();
 	void changeAcceleration();
+	void changeCubeType(int type);
+	int getCubeType();
 };
 

@@ -366,7 +366,30 @@ void Game::ExecutePlayerCommands() {
 		_drawMode = (_drawMode + 1) % DRAW_MODE;
 		std::cout << "DRAWMODE" << _drawMode << std::endl;
 	}
-	
+	//change the cub of the hand of the player
+	if (_inputManager.isKeyPressed(SDLK_1)){
+		player->changeCubeType(2);
+	}if (_inputManager.isKeyPressed(SDLK_2)){
+		player->changeCubeType(3);
+	}if (_inputManager.isKeyPressed(SDLK_3)){
+		player->changeCubeType(4);
+	}if (_inputManager.isKeyPressed(SDLK_4)){
+		player->changeCubeType(5);
+	}if (_inputManager.isKeyPressed(SDLK_5)){
+		player->changeCubeType(6);
+	}if (_inputManager.isKeyPressed(SDLK_6)){
+		player->changeCubeType(7);
+	}if (_inputManager.isKeyPressed(SDLK_7)){
+		player->changeCubeType(8);
+	}if (_inputManager.isKeyPressed(SDLK_8)){
+		player->changeCubeType(9);
+	}if (_inputManager.isKeyPressed(SDLK_9)){
+		player->changeCubeType(10);
+	}if (_inputManager.isKeyPressed(SDLK_0)){
+		player->changeCubeType(1);
+	}if (_inputManager.isKeyPressed(SDLK_i)){
+		player->changeCubeType(11);
+	}
 		//Changes the current camera 
 	if (_inputManager.isKeyPressed(SDLK_c)){
 		_currentCamara = (_currentCamara + 1) % NUM_CAMERAS;
@@ -401,7 +424,7 @@ void Game::ExecutePlayerCommands() {
 		}
 	}
 	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
-		if (w->putCube(player->getPosition(), player->getDirection())) {
+		if (w->putCube(player->getPosition(), player->getDirection(), player->getCubeType())) {
 			vbo = std::vector<Vertex>(0);
 			w->generator(vbo);
 			_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
