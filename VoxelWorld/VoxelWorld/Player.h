@@ -10,6 +10,7 @@ private:
 	glm::vec3 position;
 	glm::vec3 min, max;
 	int numCubs;
+	glm::vec3 acceleration;
 public:
 	Player(glm::vec3 pos);
 	~Player();

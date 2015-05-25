@@ -266,6 +266,7 @@ glm::vec3 World::pointToGrid(glm::vec3 position){
 void World::raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm::vec3 &colisonPos, int &face){
 	glm::vec3 currentPosition = position/ CUBESIZE;
 	while (glm::length(currentPosition - position/CUBESIZE) < maxDist){
+		std::cout << " operative. currentPositon = " <<  currentPosition.x << " , " << currentPosition.y << " , " << currentPosition.z << std::endl;
 		glm::vec3 t = { 0, 0, 0 };
 		//
 		if (direction.x > 0) t.x = (ceil(currentPosition.x) - currentPosition.x );
