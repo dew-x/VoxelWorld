@@ -3,9 +3,9 @@
 
 World::World(){
 	
-	width = 256;
-	height =256;
-	depth = 256;
+	width = 100;
+	height =100;
+	depth = 100;
 	cubs = std::vector<uint8_t>(width*height*depth, 0);
 	index = std::vector<int>(width*height*depth * 6, -1);
 	int n = 50;
