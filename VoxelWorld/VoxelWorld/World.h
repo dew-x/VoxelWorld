@@ -25,6 +25,8 @@ public:
 	inline bool inside(int x, int y,int z);
 	void generator(std::vector<Vertex> &vbo);
 	bool fits(glm::vec3 min, glm::vec3 max);
+	bool fits2(glm::vec3 pos);
+	bool fits3(glm::vec3 pos);
 	void deleteVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex> &vbo);
 	void insertVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex> &vbo);
 	bool isEmpty(unsigned x, unsigned y, unsigned z);

@@ -31,10 +31,10 @@ glm::vec3 Player::getPosition(){
 	return position;
 }
 glm::vec3 Player::getMin(){
-	return{ position.x-0.1, position.y-0.1, position.z-0.9};
+	return{ position.x+0.4, position.y+0.4, position.z-2.4};
 }
 glm::vec3 Player::getMax(){
-	return{ position.x+0.1, position.y+0.1, position.z+0.1 };
+	return{ position.x+0.6, position.y+0.6, position.z+0.6 };
 }
 void Player::addMouseDeltas(float x, float y){
 	float cspeed = 20;
@@ -63,7 +63,7 @@ void Player::moveDeltas(float x, float y, World *w){
 	glm::vec3 oldPosition = position;
 	position += (dir*0.1f);
 	glm::vec3 ofsetWorld = { w->width*CUBESIZE, w->height*CUBESIZE, w->depth*CUBESIZE };
-	if (!w->fits(getMin(),getMax())) position = oldPosition;
+	if (!w->fits2(position)) position = oldPosition;
 	//if (!w->fits(ofsetWorld - getMax(), ofsetWorld - getMin())) position = oldPosition;
 }
 
@@ -77,7 +77,7 @@ void Player::addGravity(World *w){
 	position.z += acceleration.z;
 	if (acceleration.z > GRAVITY) acceleration.z -= 0.01f;
 	else acceleration.z = GRAVITY;
-	if (!w->fits(getMin(), getMax())) position = oldPosition;
+	if (!w->fits3(position)) position = oldPosition;
 }
 
 void Player::addCub(){ numCubs++; }

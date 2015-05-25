@@ -311,6 +311,25 @@ bool World::fits(glm::vec3 min, glm::vec3 max){
 	return true;
 }
 
+bool World::fits2(glm::vec3 pos) {
+	pos = pos / CUBESIZE;
+	pos.x = floor(pos.x);
+	pos.y = floor(pos.y);
+	pos.z = floor(pos.z - 0.5);
+	if (inside(pos.x, pos.y, pos.z) && cubs[coord(pos.x, pos.y, pos.z)] != 0) return false;
+	if (inside(pos.x, pos.y, pos.z-1) && cubs[coord(pos.x, pos.y, pos.z-1)] != 0) return false;
+	return true;
+}
+bool World::fits3(glm::vec3 pos) {
+	pos = pos / CUBESIZE;
+	pos.x = floor(pos.x);
+	pos.y = floor(pos.y);
+	pos.z = floor(pos.z - 0.5);
+	if (inside(pos.x, pos.y, pos.z) && cubs[coord(pos.x, pos.y, pos.z)] != 0) return false;
+	if (inside(pos.x, pos.y, pos.z - 1) && cubs[coord(pos.x, pos.y, pos.z - 1)] != 0) return false;
+	return true;
+}
+
 bool World::removeCube(glm::vec3 position, glm::vec3 direction) {
 	//cubs[coord(v.x, v.y, v.z)] = 0;
 	glm::vec3 cpos;
