@@ -224,14 +224,31 @@ bool World::fits(glm::vec3 min, glm::vec3 max){
 	return true;
 }
 
-void World::removeCube(glm::vec3 position, glm::vec3 direction) {
+bool World::removeCube(glm::vec3 position, glm::vec3 direction) {
 	//cubs[coord(v.x, v.y, v.z)] = 0;
-
+	glm::vec3 cpos;
+	int face;
+	raycast(5, position, direction, cpos, face);
+	if (face != -1){
+		cubs[coord(cpos.x, cpos.y, cpos.z)] = 0;
+		return true;
+	}
+	return false;
 }
 
-void World::putCube(glm::vec3 position, glm::vec3 direction){
+bool World::putCube(glm::vec3 position, glm::vec3 direction){
 	//cubs[coord(v.x, v.y, v.z)] = 1;
-
+	glm::vec3 cpos;
+	int face;
+	raycast(5, position, direction, cpos, face);
+	if (face != -1){
+		cpos += axis[face];
+		if (inside(cpos.x, cpos.y, cpos.z) && cubs[coord(cpos.x, cpos.y, cpos.z)] == 0) {
+			cubs[coord(cpos.x, cpos.y, cpos.z)] = 1;
+			return true;
+		}
+	}
+	return false;
 }
 
 int World::cubeTipe(glm::vec3 v){ 
@@ -246,6 +263,39 @@ glm::vec3 World::pointToGrid(glm::vec3 position){
 	return v;
 }
 
-int World::raycast(float maxDist){
-
+void World::raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm::vec3 &colisonPos, int &face){
+	glm::vec3 currentPosition = position/ CUBESIZE;
+	while (glm::length(currentPosition - position/CUBESIZE) < maxDist){
+		glm::vec3 t = { 0, 0, 0 };
+		//
+		if (direction.x > 0) t.x = (ceil(currentPosition.x) - currentPosition.x );
+		else t.x = (floor(currentPosition.x) - currentPosition.x);
+		//
+		if (direction.y > 0) t.y = (ceil(currentPosition.y) - currentPosition.y);
+		else t.y = (floor(currentPosition.y) - currentPosition.y);
+		//
+		if (direction.z > 0) t.z = (ceil(currentPosition.z) - currentPosition.z) ;
+		else t.z = (floor(currentPosition.z) - currentPosition.z) ;
+		t = t / direction;
+		if (t.x <= t.y && t.x <= t.z){
+			currentPosition = currentPosition + direction * t.x * 1.01f;
+			if (direction.x > 0) face = 0;
+			else face = 1;
+		}
+		else if (t.y <= t.z){
+			currentPosition = currentPosition + direction * t.y * 1.01f;
+			if (direction.y > 0) face = 2;
+			else face = 3;
+		}
+		else{
+			currentPosition = currentPosition + direction * t.z * 1.01f;
+			if (direction.z > 0) face = 4;
+			else face = 5;
+		}
+		if (inside(floor(currentPosition.x), floor(currentPosition.y), floor(currentPosition.z)) && cubs[coord(floor(currentPosition.x), floor(currentPosition.y), floor(currentPosition.z))] != 0) {
+			colisonPos = { floor(currentPosition.x), floor(currentPosition.y), floor(currentPosition.z) };
+			return;
+		}
+	}
+	face = -1;
 }

@@ -8,6 +8,8 @@
 #include "Vertex.h"
 #include <stdlib.h> 
 
+const std::vector<glm::vec3> axis = { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, {0,0,-1} };
+
 #define CUBESIZE 2.0f
 class World{
 	std::vector<uint8_t> cubs;
@@ -26,10 +28,10 @@ public:
 	void insertVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex> &vbo);
 	bool isEmpty(unsigned x, unsigned y, unsigned z);
 	void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 d, int id);
-	void removeCube(glm::vec3 position, glm::vec3 direction);
-	void putCube(glm::vec3 position, glm::vec3 direction);
+	bool removeCube(glm::vec3 position, glm::vec3 direction);
+	bool putCube(glm::vec3 position, glm::vec3 direction);
 	int cubeTipe(glm::vec3 v);
 	glm::vec3 pointToGrid(glm::vec3 position);
-	int raycast(float maxDist);
+	void raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm::vec3 &colisonPos, int &face);
 };
 
