@@ -283,17 +283,17 @@ void World::raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm:
 		if (direction.z != 0) t.z = t.z / direction.z;
 		if (t.x <= t.y && t.x <= t.z && t.x!=0){
 			currentPosition = currentPosition + direction * t.x * 1.01f;
-			if (direction.x > 0) face = 0;
+			if (direction.x < 0) face = 0;
 			else face = 1;
 		}
 		else if (t.y <= t.z && t.y!=0){
 			currentPosition = currentPosition + direction * t.y * 1.01f;
-			if (direction.y > 0) face = 2;
+			if (direction.y < 0) face = 2;
 			else face = 3;
 		}
 		else{
 			currentPosition = currentPosition + direction * t.z * 1.01f;
-			if (direction.z > 0) face = 4;
+			if (direction.z < 0) face = 4;
 			else face = 5;
 		}
 		if (inside(floor(currentPosition.x), floor(currentPosition.y), floor(currentPosition.z)) && cubs[coord(floor(currentPosition.x), floor(currentPosition.y), floor(currentPosition.z))] != 0) {
