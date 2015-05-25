@@ -6,6 +6,7 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Vertex.h"
+#include <stdlib.h> 
 
 #define CUBESIZE 2.0f
 class World{

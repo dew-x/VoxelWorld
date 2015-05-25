@@ -13,7 +13,7 @@ World::World(){
 		for (int y = 0;y < height;y++){
 			for (int z = 0; z <depth ;z++){
 				if (z < depth/2){
-					if (!(x <= z && y <= z)) cubs[coord(x, y, z)] = 1;
+					if (!(x <= z && y <= z)) cubs[coord(x, y, z)] = (rand() % 3)+1;
 					else cubs[coord(x, y, z)] = 0;
 				}
 				else cubs[coord(x, y, z)] = 0;
