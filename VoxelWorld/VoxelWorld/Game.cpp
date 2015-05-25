@@ -402,6 +402,20 @@ void Game::ExecutePlayerCommands() {
 			//player->elimCub();
 		//}
 	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+		if (w->removeCube(player->getPosition(), player->getDirection())) {
+			vbo = std::vector<Vertex>(0);
+			w->generator(vbo);
+			_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
+		}
+	}
+	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
+		if (w->putCube(player->getPosition(), player->getDirection())) {
+			vbo = std::vector<Vertex>(0);
+			w->generator(vbo);
+			_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
+		}
+	}
 	if (deltaPos.x != 0 || deltaPos.y != 0){
 		//deltaPos = glm::normalize(deltaPos)*deltaT;
 		player->moveDeltas(deltaPos.x, deltaPos.y, w);
