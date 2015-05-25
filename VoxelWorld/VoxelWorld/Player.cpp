@@ -9,6 +9,7 @@ Player::Player(glm::vec3 pos)
 {
 	position = pos;
 	numCubs = 0;
+	acceleration = { 0, 0, 2.5 };
 }
 
 
@@ -75,7 +76,7 @@ void Player::setDirection(glm::vec3 d){
 
 void Player::addGravity(World *w){
 	glm::vec3 oldPosition = position;
-	position.z -= 0.98;
+	position.z -= 0.25;
 	if (!w->fits(getMin(), getMax())) position = oldPosition;
 }
 

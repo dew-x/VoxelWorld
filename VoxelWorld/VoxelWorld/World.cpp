@@ -113,7 +113,8 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x, y, z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
-		v.setUV(0.0f, 0.0f);
+		if (d.x < 0) v.setUV(1.0f, 1.0f);
+		else v.setUV(0.0f, 0.0f);
 		v.setNormal(0.0,normal, 0.0);
 		vbo.push_back(v);
 
@@ -121,7 +122,8 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x, y, z+d.z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
-		v.setUV(0.0f, 1.0f);
+		if (d.x < 0) v.setUV(1.0f, 0.0f);
+		else v.setUV(0.0f, 1.0f);
 		v.setNormal(0.0, normal, 0.0);
 		vbo.push_back(v);
 
@@ -129,7 +131,8 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x+d.x, y, z + d.z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
-		v.setUV(1.0f, 1.0f);
+		if (d.x < 0) v.setUV(0.0f, 0.0f);
+		else v.setUV(1.0f, 1.0f);
 		v.setNormal(0.0, normal, 0.0);
 		vbo.push_back(v);
 
@@ -137,9 +140,11 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x + d.x, y, z);
 		v.setId(id);
 		v.setColor(255, 0, 0, 255);
-		v.setUV(1.0f, 0.0f);
+		if (d.x < 0) v.setUV(0.0f, 1.0f);
+		else v.setUV(1.0f, 0.0f);
 		v.setNormal(0.0, normal, 0.0);
 		vbo.push_back(v);
+
 	}else if (d.y == d.z){
 		if (d.z > 0) normal = -1;
 		else normal = 1;
@@ -147,7 +152,8 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x, y, z);
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
-		v.setUV(1.0f, 0.0f);
+		if (d.z < 0) v.setUV(0.0f, 1.0f);
+		else v.setUV(1.0f, 0.0f);
 		v.setNormal(normal, 0.0, 0.0);
 		vbo.push_back(v);
 
@@ -155,7 +161,8 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x, y+d.y, z);
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
-		v.setUV(0.0f, 0.0f);
+		if (d.z < 0) v.setUV(1.0f, 1.0f);
+		else v.setUV(0.0f, 0.0f);
 		v.setNormal(normal, 0.0, 0.0);
 		vbo.push_back(v);
 
@@ -163,7 +170,8 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x, y + d.y, z + d.z);
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
-		v.setUV(0.0f, 1.0f);
+		if (d.z < 0) v.setUV(1.0f, 0.0f);
+		else v.setUV(0.0f, 1.0f);
 		v.setNormal(normal, 0.0, 0.0);
 		vbo.push_back(v);
 
@@ -171,7 +179,8 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		v.setPosition(x , y, z+d.z);
 		v.setId(id);
 		v.setColor(0, 255, 0, 255);
-		v.setUV(1.0f, 1.0f);
+		if (d.z < 0) v.setUV(0.0f, 0.0f);
+		else v.setUV(1.0f, 1.0f);
 		v.setNormal(normal, 0.0, 0.0);
 		vbo.push_back(v);
 	}else{
