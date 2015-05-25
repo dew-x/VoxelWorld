@@ -224,22 +224,28 @@ bool World::fits(glm::vec3 min, glm::vec3 max){
 	return true;
 }
 
-void World::eliminateCube(glm::vec3 v) {
-	cubs[coord(v.x, v.y, v.z)] = 0;
+void World::removeCube(glm::vec3 position, glm::vec3 direction) {
+	//cubs[coord(v.x, v.y, v.z)] = 0;
+
 }
 
-void World::putCube(glm::vec3 v){
-	cubs[coord(v.x, v.y, v.z)] = 1;
+void World::putCube(glm::vec3 position, glm::vec3 direction){
+	//cubs[coord(v.x, v.y, v.z)] = 1;
+
 }
 
 int World::cubeTipe(glm::vec3 v){ 
 	return cubs[coord(v.x, v.y, v.z)]; 
 }
 
-glm::vec3 World::transformLookAt(glm::vec3 lookAt){
+glm::vec3 World::pointToGrid(glm::vec3 position){
 	glm::vec3 v;
-	v.x = floor(lookAt.x/CUBESIZE);
-	v.y = floor(lookAt.y/CUBESIZE);
-	v.z = floor(lookAt.z/CUBESIZE);
+	v.x = floor(position.x/CUBESIZE);
+	v.y = floor(position.y/CUBESIZE);
+	v.z = floor(position.z/CUBESIZE);
 	return v;
+}
+
+int World::raycast(float maxDist){
+
 }
