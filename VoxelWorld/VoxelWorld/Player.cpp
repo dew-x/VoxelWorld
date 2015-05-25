@@ -9,7 +9,7 @@ Player::Player(glm::vec3 pos)
 {
 	position = pos;
 	numCubs = 0;
-	acceleration = { 0, 0, 2.5 };
+	acceleration = { 0, 0, -0.3 };
 }
 
 
@@ -66,21 +66,23 @@ void Player::moveDeltas(float x, float y, World *w){
 	if (!w->fits(getMin(),getMax())) position = oldPosition;
 	//if (!w->fits(ofsetWorld - getMax(), ofsetWorld - getMin())) position = oldPosition;
 }
-void Player::doJump(){
-
-}
 
 void Player::setDirection(glm::vec3 d){
 	direction = glm::normalize(d);
 }
 
 void Player::addGravity(World *w){
-	glm::vec3 oldPosition = position;
-	position.z -= 0.25;
+	std::cout << " acceleration is " << acceleration.x << " " << acceleration.y << " " << acceleration.z << std::endl;
+ 	glm::vec3 oldPosition = position;
+	position.z += acceleration.z;
+	if (acceleration.z > GRAVITY) acceleration.z -= 0.01f;
+	else acceleration.z = GRAVITY;
 	if (!w->fits(getMin(), getMax())) position = oldPosition;
 }
 
 void Player::addCub(){ numCubs++; }
 
 void Player::elimCub(){if(numCubs > 0) numCubs--; }
+
+void Player::changeAcceleration(){ if (acceleration.z == GRAVITY) acceleration.z = -GRAVITY; }
 

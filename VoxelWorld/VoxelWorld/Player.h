@@ -3,6 +3,8 @@
 #include <glm\gtx\rotate_vector.hpp>
 #include "World.h"
 
+#define GRAVITY -0.25f
+
 class Player
 {
 private:
@@ -22,11 +24,11 @@ public:
 	glm::vec3 getMax();
 	void addMouseDeltas(float x, float y);
 	void moveDeltas(float x, float y, World *w);
-	void doJump();
 	void addGravity(World *w);
 	void setDirection(glm::vec3 d);
 	void destroyCube();
 	void addCub();
 	void elimCub();
+	void changeAcceleration();
 };
 

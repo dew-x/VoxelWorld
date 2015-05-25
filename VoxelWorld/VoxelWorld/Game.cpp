@@ -390,17 +390,8 @@ void Game::ExecutePlayerCommands() {
 	if (_inputManager.isKeyDown(SDLK_a)){
 		deltaPos.y -= 1;
 	}
-	if (_inputManager.isKeyPressed(SDLK_f)){
-		//if (w->cubeTipe(lookAt) == 1){
-			//w->eliminateCube(lookAt);
-			//player->addCub();
-		//}
-	}
-	if (_inputManager.isKeyPressed(SDLK_g)){
-		//if (w->cubeTipe(lookAt) == 0){
-			//w->putCube(lookAt);
-			//player->elimCub();
-		//}
+	if (_inputManager.isKeyPressed(SDLK_SPACE)){
+		player->changeAcceleration();
 	}
 	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
 		if (w->removeCube(player->getPosition(), player->getDirection())) {
@@ -428,5 +419,6 @@ void Game::ExecutePlayerCommands() {
 */
 void Game::ExecuteGameLogic() {
 	//Execute the game logic (move bullets, enemies, etc.)
+	//player->addGravity(w);
 
 }
