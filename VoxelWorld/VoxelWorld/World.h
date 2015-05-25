@@ -6,7 +6,8 @@
 #include <vector>
 #include <glm/glm.hpp>
 #include "Vertex.h"
-#include <stdlib.h> 
+#include <stdlib.h>
+#include <time.h>
 
 const std::vector<glm::vec3> axis = { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, {0,0,-1} };
 
@@ -33,5 +34,11 @@ public:
 	int cubeTipe(glm::vec3 v);
 	glm::vec3 pointToGrid(glm::vec3 position);
 	void raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm::vec3 &colisonPos, int &face);
+	int getSize(int x, int y);
+private:
+	void doPoint(int x, int y, int size);
+	void doLine(int x0, int y0, int x1, int y1);
+	void doSquare(int x0, int y0, int x1, int y1);
+	
 };
 

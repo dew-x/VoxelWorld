@@ -1,24 +1,34 @@
 #include "World.h"
 
-
 World::World(){
-	
+	srand(time(NULL));
 	width = 100;
 	height =100;
 	depth = 100;
 	cubs = std::vector<uint8_t>(width*height*depth, 0);
 	index = std::vector<int>(width*height*depth * 6, -1);
-	int n = 50;
-	for (int x=0; x < width ;x++){
-		for (int y = 0;y < height;y++){
-			for (int z = 0; z <depth ;z++){
-				if (z < depth/2){
-					if (!(x <= z && y <= z)) cubs[coord(x, y, z)] = (rand() % 3)+1;
-					else cubs[coord(x, y, z)] = 0;
-				}
-				else cubs[coord(x, y, z)] = 0;
-			}
+	// do corners
+	doPoint(0, 0, depth/4+(rand()%depth/2));
+	doPoint(width - 1,0, depth / 4 + (rand() % depth / 2));
+	doPoint(0, height - 1, depth / 4 + (rand() % depth / 2));
+	doPoint(width - 1, height - 1, depth / 4 + (rand() % depth / 2));
+	doLine(0, 0, width - 1, 0);
+	doLine(0, 0, 0, width - 1);
+	doLine(width - 1, 0, width - 1, height - 1);
+	doLine(0, height - 1, width - 1, height - 1);
+	doSquare(0, 0, width - 1, height - 1);
+	for (int i = 0; i < width; ++i) {
+		int randx = rand()%width;
+		int randy = rand() % height;
+		int size = getSize(randx, randy);
+		for (int z = size; z < size + 5 && z<depth; ++z) {
+			cubs[coord(randx, randy, z)] = 2;
 		}
+		if (inside(randx, randy, size + 6)) cubs[coord(randx, randy, size + 6)] = 1;
+		if (inside(randx + 1, randy, size + 5)) cubs[coord(randx + 1, randy, size + 5)] = 1;
+		if (inside(randx - 1, randy, size + 5)) cubs[coord(randx - 1, randy, size + 5)] = 1;
+		if (inside(randx, randy + 1, size + 5)) cubs[coord(randx, randy + 1, size + 5)] = 1;
+		if (inside(randx, randy - 1, size + 5)) cubs[coord(randx, randy - 1, size + 5)] = 1;
 	}
 }
 
@@ -26,6 +36,74 @@ World::World(){
 World::~World(){
 	cubs.clear();
 	index.clear();
+}
+
+void World::doPoint(int x, int y, int size) {
+	for (int z = 0; z < size; ++z) {
+		if (z < size / 2) cubs[coord(x, y, z)] = 3;
+		else cubs[coord(x, y, z)] = 1;
+	}
+}
+
+void World::doLine(int x0, int y0, int x1, int y1) {
+	int init = getSize(x0, y0);
+	int end = getSize(x1, y1);
+	if (x0 == x1) {
+		int x = x0;
+		for (int y = y0+1; y < y1; ++y) {
+			int rando = rand() % 100;
+			int togo = y1 - y;
+			if (togo <= abs(end - init)) init += (end - init) / togo;
+			else if (rando<10) init -= 1;
+			else if (rando>90) init += 1;
+			if (init>depth - 10) init = depth - 10;
+			doPoint(x, y, init);
+		}
+	}
+	else if (y0 == y1) {
+		int y = y0;
+		for (int x = x0+1; x < x1; ++x) {
+			int rando = rand() % 100;
+			int togo = x1 - x;
+			if (togo <= abs(end - init)) init += (end - init) / togo;
+			else if (rando<10) init -= 1;
+			else if (rando>90) init += 1;
+			if (init>depth - 10) init = depth - 10;
+			doPoint(x, y, init);
+		}
+	}
+	else {
+		std::cout << "WTF!!" << std::endl;
+	}
+}
+
+void World::doSquare(int x0, int y0, int x1, int y1) {
+	if (x1 - x0>1 && y1 - y0 > 1) {
+		int randx = (rand() % (x1 - (x0+1))) + x0+1;
+		int randy = (rand() % (y1 - (y0 + 1))) + y0 + 1;
+		if (rand() % 2 == 0) {
+			doLine(x0,randy,x1,randy);
+			doLine(randx, y0, randx, randy);
+			doLine(randx, randy, randx, y1);
+		}
+		else {
+			doLine(randx, y0, randx, y1);
+			doLine(x0, randy, randx, randy);
+			doLine(randx, randy, x1, randy);
+		}
+		doSquare(x0, y0, randx, randy);
+		doSquare(randx, y0, x1, randy);
+		doSquare(x0, randy, randx, y1);
+		doSquare(randx, randy, x1, y1);
+	}
+}
+
+int World::getSize(int x, int y) {
+	int z = 0;
+	while (z < depth && cubs[coord(x,y,z)]!=0) {
+		++z;
+	}
+	return z;
 }
 
 //return an algoritm for run 3d matrix

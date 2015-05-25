@@ -81,8 +81,8 @@ void Game::loadSceneToRender() {
 	vbo = std::vector<Vertex>(0);
 	w = new World();
 	w->generator(vbo);
-
-	glm::vec3 initPlayerPos = { (w->width*CUBESIZE)/2, (w->height*CUBESIZE)/2, ((w->depth*CUBESIZE)/2)+1};
+	int zpos=w->getSize(w->width / 2, w->height / 2);
+	glm::vec3 initPlayerPos = { (w->width*CUBESIZE)/2, (w->height*CUBESIZE)/2, (zpos*CUBESIZE)+4};
 	glm::vec3 initPlayerdir = { -0.1, -0.1, 0 };
 	player = new Player(initPlayerPos);
 	player->setDirection(initPlayerdir);
