@@ -24,6 +24,7 @@ uniform vec4 objectColor;
 uniform vec2 textureScaleFactor;
 	//normal model matrix
 uniform mat3 modelNormalMatrix;
+uniform int lightingEnabled;
 
 
 void main() {
@@ -47,12 +48,21 @@ void main() {
 			//Moreover, we multiple by a factor that manage if the texture has to be repeated or not
 	int textID=0;
 	if (vertexId==-1) {
-		if (vertexNormal.x==1)	textID=14;
-		else if (vertexNormal.x==-1)	textID=13;
-		else if (vertexNormal.y==1)	textID=12;
-		else if (vertexNormal.y==-1)	textID=11;
-		else if (vertexNormal.z==1)	textID=10;
-		else if (vertexNormal.z==-1)	textID=9;
+		if (lightingEnabled==1) {
+			if (vertexNormal.x==1)	textID=37;
+			else if (vertexNormal.x==-1)	textID=37;
+			else if (vertexNormal.y==1)	textID=37;
+			else if (vertexNormal.y==-1)	textID=37;
+			else if (vertexNormal.z==1)	textID=36;
+			else if (vertexNormal.z==-1)	textID=38;
+		} else {
+			if (vertexNormal.x==1)	textID=34;
+			else if (vertexNormal.x==-1)	textID=34;
+			else if (vertexNormal.y==1)	textID=34;
+			else if (vertexNormal.y==-1)	textID=34;
+			else if (vertexNormal.z==1)	textID=33;
+			else if (vertexNormal.z==-1)	textID=35;
+		}
 	} else {
 		if (vertexNormal.x==0 && vertexNormal.y==0) {
 			if (vertexNormal.z>0) textID=int((vertexId-1)*3);
@@ -62,9 +72,9 @@ void main() {
 		else textID=int(((vertexId-1)*3)+1);
 	}
 	//textID=14;
-	int textY=int(textID/4);
-	int textX=int(textID%4);
-	fragmentTextureCoordinates=vec2(vertexUV.x/4.0+textX/4.0,(1.0-vertexUV.y)/4.0+textY/4.0)*textureScaleFactor;
+	int textY=int(textID/8);
+	int textX=int(textID%8);
+	fragmentTextureCoordinates=vec2(vertexUV.x/8.0+textX/8.0,(1.0-vertexUV.y)/8.0+textY/8.0)*textureScaleFactor;
 
 		//Adjust the normals
 	fragmentNormal = modelNormalMatrix * vertexNormal;

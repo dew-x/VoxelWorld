@@ -24,11 +24,11 @@ World::World(){
 		for (int z = size; z < size + 5 && z<depth; ++z) {
 			cubs[coord(randx, randy, z)] = 2;
 		}
-		if (inside(randx, randy, size + 6)) cubs[coord(randx, randy, size + 6)] = 1;
-		if (inside(randx + 1, randy, size + 5)) cubs[coord(randx + 1, randy, size + 5)] = 1;
-		if (inside(randx - 1, randy, size + 5)) cubs[coord(randx - 1, randy, size + 5)] = 1;
-		if (inside(randx, randy + 1, size + 5)) cubs[coord(randx, randy + 1, size + 5)] = 1;
-		if (inside(randx, randy - 1, size + 5)) cubs[coord(randx, randy - 1, size + 5)] = 1;
+		if (inside(randx, randy, size + 6)) cubs[coord(randx, randy, size + 6)] = 6;
+		if (inside(randx + 1, randy, size + 5)) cubs[coord(randx + 1, randy, size + 5)] = 6;
+		if (inside(randx - 1, randy, size + 5)) cubs[coord(randx - 1, randy, size + 5)] = 6;
+		if (inside(randx, randy + 1, size + 5)) cubs[coord(randx, randy + 1, size + 5)] = 6;
+		if (inside(randx, randy - 1, size + 5)) cubs[coord(randx, randy - 1, size + 5)] = 6;
 	}
 }
 
