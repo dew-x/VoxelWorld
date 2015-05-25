@@ -265,6 +265,7 @@ glm::vec3 World::pointToGrid(glm::vec3 position){
 
 void World::raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm::vec3 &colisonPos, int &face){
 	glm::vec3 currentPosition = position/ CUBESIZE;
+	direction *= -1.0f;
 	while (glm::length(currentPosition - position/CUBESIZE) < maxDist){
 		std::cout << " operative. currentPositon = " <<  currentPosition.x << " , " << currentPosition.y << " , " << currentPosition.z << std::endl;
 		glm::vec3 t = { 0, 0, 0 };
@@ -276,14 +277,16 @@ void World::raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm:
 		else t.y = (floor(currentPosition.y) - currentPosition.y);
 		//
 		if (direction.z > 0) t.z = (ceil(currentPosition.z) - currentPosition.z) ;
-		else t.z = (floor(currentPosition.z) - currentPosition.z) ;
-		t = t / direction;
-		if (t.x <= t.y && t.x <= t.z){
+		else t.z = (floor(currentPosition.z) - currentPosition.z);
+		if (direction.x!=0) t.x = t.x / direction.x;
+		if (direction.y != 0) t.y = t.y / direction.y;
+		if (direction.z != 0) t.z = t.z / direction.z;
+		if (t.x <= t.y && t.x <= t.z && t.x!=0){
 			currentPosition = currentPosition + direction * t.x * 1.01f;
 			if (direction.x > 0) face = 0;
 			else face = 1;
 		}
-		else if (t.y <= t.z){
+		else if (t.y <= t.z && t.y!=0){
 			currentPosition = currentPosition + direction * t.y * 1.01f;
 			if (direction.y > 0) face = 2;
 			else face = 3;
