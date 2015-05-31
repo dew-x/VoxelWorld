@@ -9,6 +9,14 @@
 #include <stdlib.h>
 #include <time.h>
 
+/*
+	World class
+
+	Handles memory of cubes into the world into an array of 1D but represeiting a 3D world
+	Have all the collision methods because it have all the cube information
+
+*/
+
 const std::vector<glm::vec3> axis = { { 1, 0, 0 }, { -1, 0, 0 }, { 0, 1, 0 }, { 0, -1, 0 }, { 0, 0, 1 }, {0,0,-1} };
 
 #define CUBESIZE 2.0f

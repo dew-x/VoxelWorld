@@ -133,7 +133,9 @@ void Camera::swapProjectionMode() {
 		setOrthographicProjection();
 	}
 }
-
+/*
+	Deprecated only for testing purposes
+*/
 void Camera::move(int mode) {
 	if (mode == 0) {
 		_cameraPos.x += 0.1f;
@@ -154,6 +156,9 @@ void Camera::move(int mode) {
 
 	updateCameraMatrix();
 }
+/*
+	Unused only first person
+*/
 void Camera::zoom(int mode) {
 
 }

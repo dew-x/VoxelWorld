@@ -3,6 +3,19 @@
 #include <glm\gtx\rotate_vector.hpp>
 #include "World.h"
 
+/*
+	Player class
+
+	Handles player information
+	-Position
+	-Acceleration
+	-Direction
+	-Inventory
+
+	Have functions to interact with the view and the world
+
+*/
+
 #define GRAVITY -0.25f
 
 class Player

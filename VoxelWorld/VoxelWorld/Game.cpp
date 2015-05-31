@@ -25,6 +25,7 @@ Game::Game(std::string windowTitle, int screenWidth, int screenHeight, bool enab
 Game::~Game()
 {
 	delete w;
+	delete player;
 }
 
 /*
@@ -78,17 +79,23 @@ void Game::loadShaders() {
 */
 void Game::loadSceneToRender() {
 	//Load the game
+	// Vertex buffer object
 	vbo = std::vector<Vertex>(0);
+	// world cubes data
 	w = new World();
+	// load vbo with world data
 	w->generator(vbo);
+	// initialize player
+		// computze z position
 	int zpos=w->getSize(w->width / 2, w->height / 2);
+	// place the player in the center of the world
 	glm::vec3 initPlayerPos = { (w->width*CUBESIZE)/2-0.5f, (w->height*CUBESIZE)/2-0.5f, (zpos*CUBESIZE)+3};
 	glm::vec3 initPlayerdir = { -0.1, -0.1, 0 };
 	player = new Player(initPlayerPos);
 	player->setDirection(initPlayerdir);
 
 	std::cout << vbo.size() << std::endl;
-	//_gameElements.loadGameElements("./resources/scene3D.txt");	
+	// send data to gpu	
 	_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
 }
 
@@ -108,6 +115,7 @@ void Game::loadGameTextures() {
 			currentGameObject = _gameElements.getGameElement(i);
 			(_gameElements.getGameElement(i))._textureID = _textureManager.getTextureID(currentGameObject._textureFile);
 		}*/
+	// load texture and set th filter to linear to get a 8-bit aspect
 	tex = _textureManager.getTextureID("resources/textures/minecrafttexture.png");
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -174,6 +182,7 @@ void Game::processInput() {
 			_gameState = GameState::EXIT;
 			break;
 		case SDL_MOUSEMOTION:
+			// get mouse deltas to move camera
 			_inputManager.setMouseCoords(evnt.motion.xrel, evnt.motion.yrel);
 			player->addMouseDeltas(evnt.motion.xrel, evnt.motion.yrel);
 			break;
@@ -210,7 +219,7 @@ void Game::drawGame() {
 	GLint textureDataLocation = _colorProgram.getUniformLocation("textureData");
 	GLint textureScaleFactorLocation = _colorProgram.getUniformLocation("textureScaleFactor");	
 	GLint modelNormalMatrix = _colorProgram.getUniformLocation("modelNormalMatrix");
-	// light
+	// light uniforms
 	GLint lightingEnabled = _colorProgram.getUniformLocation("lightingEnabled");
 	GLint isALightSource = _colorProgram.getUniformLocation("isALightSource");
 	GLint lightPosition = _colorProgram.getUniformLocation("lightPosition");
@@ -234,15 +243,6 @@ void Game::drawGame() {
 	glActiveTexture(tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glm::mat4 modelMatrix = glm::mat4(1.0);
-	/*currentRenderedGameElement = _gameElements.getGameElement(i);
-	modelMatrix = glm::translate(modelMatrix, currentRenderedGameElement._translate);
-	if (currentRenderedGameElement._angle != 0) {
-		modelMatrix = glm::rotate(modelMatrix, glm::radians(currentRenderedGameElement._angle), currentRenderedGameElement._rotation);
-	}
-	modelMatrix = glm::scale(modelMatrix, currentRenderedGameElement._scale);
-
-	//Texture
-	glBindTexture(GL_TEXTURE_2D, currentRenderedGameElement._textureID);*/
 
 	//Bind the uniform data to the shader
 	/*Pass the matrix information to the shader
@@ -287,53 +287,13 @@ void Game::drawGame() {
 	glUniform3f(lightDifusse, lightDifusseV.x, lightDifusseV.y, lightDifusseV.z);
 	glUniform3f(lightSpecular, lightSpecularV.x, lightSpecularV.y, lightSpecularV.z);
 	glUniform1f(lightShininess, lightShine);
+	// draw vbo
 	_openGLBuffers.drawData(0, vbo.size());
-		//Each object MUST BE RENDERED based on the position, rotation and scale
-	/*for (int i = 0; i < _gameElements.getNumGameElements(); i++) {		
-			//Model transformation matrix will scale, rotate and translate the current object. This matrix is built in the inverse order of the operations
-		glm::mat4 modelMatrix;		
-		currentRenderedGameElement = _gameElements.getGameElement(i);
-		modelMatrix = glm::translate(modelMatrix, currentRenderedGameElement._translate);
-		if (currentRenderedGameElement._angle != 0) {
-			modelMatrix = glm::rotate(modelMatrix, glm::radians(currentRenderedGameElement._angle), currentRenderedGameElement._rotation);
-		}
-		modelMatrix = glm::scale(modelMatrix, currentRenderedGameElement._scale);
-
-			//Texture
-		glBindTexture(GL_TEXTURE_2D, currentRenderedGameElement._textureID);
-
-			//Bind the uniform data to the shader
-			/*Pass the matrix information to the shader
-			//Get the uniform variable location
-			//Pass the matrix
-			//1st parameter: the location
-			//2nd parameter: the number of matrices
-			//3rd parameter: if we want to transpose the matrix
-			//4th parameter: the matrix data
-				
-		glUniformMatrix4fv(modelMatrixUniform, 1, GL_FALSE, glm::value_ptr(modelMatrix));
-		glUniformMatrix4fv(viewMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getViewMatrix()));
-		glUniformMatrix4fv(projectionMatrixUniform, 1, GL_FALSE, glm::value_ptr(_camera[_currentCamara].getProjectionMatrix()));
-		glUniform4fv(newColorUniform, 1, glm::value_ptr(currentRenderedGameElement._color));
-		glUniform1i(textureDataLocation, 0);		//This line is not needed if we use only 1 texture, it is sending the GL_TEXTURE0
-		glUniform1i(drawModeUniform, _drawMode);
-		if (currentRenderedGameElement._textureRepetion) {
-			glUniform2f(textureScaleFactorLocation, currentRenderedGameElement._scale.x, currentRenderedGameElement._scale.y);
-		}
-		else {
-			glUniform2f(textureScaleFactorLocation, 1.0f,1.0f);
-		}
-			//Send data to GPU
-		_openGLBuffers.sendDataToGPU(_gameElements.getData(currentRenderedGameElement._objectType), _gameElements.getNumVertices(currentRenderedGameElement._objectType));
-		
-			//Unbind the texture
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}*/
+	//Unbind the texture
 	glBindTexture(GL_TEXTURE_2D, 0);
-		//Unbind the program
+	//Unbind the program
 	_colorProgram.unuse();
-
-		//Swap the display buffers (displays what was just drawn)
+	//Swap the display buffers (displays what was just drawn)
 	_window.swapBuffer();
 }
 
@@ -346,6 +306,7 @@ void Game::updateGameObjects() {
 	ExecutePlayerCommands();
 		//Execute the game logic
 	ExecuteGameLogic();
+		// update camera position and direction
 	_camera[_currentCamara].setCameraPosition(player->getPosition());
 	_camera[_currentCamara].setCameraFront(player->getCameraFront());
 }
@@ -357,12 +318,10 @@ void Game::updateGameObjects() {
 	- c changes the camera
 */
 void Game::ExecutePlayerCommands() {
-		//Changes the draw mode
 	glm::vec2 deltaPos = { 0, 0 };
-	//glm::vec3 lookAt = w->transformLookAt(player->getCameraFront());
-	float deltaT = 1.0 / 60.0;
 
 	if (_inputManager.isKeyPressed(SDLK_t)){
+		// change draw mode
 		_drawMode = (_drawMode + 1) % DRAW_MODE;
 		std::cout << "DRAWMODE" << _drawMode << std::endl;
 	}
@@ -394,14 +353,13 @@ void Game::ExecutePlayerCommands() {
 	if (_inputManager.isKeyPressed(SDLK_c)){
 		_currentCamara = (_currentCamara + 1) % NUM_CAMERAS;
 	}
-	
+	// change light mode
 	if (_inputManager.isKeyPressed(SDLK_l)){
 		_lightMode = (_lightMode + 1) % 2;
 	}
-		//Add the additional keys pressed by the player for moving/changing the state of the player object
-
+	//Add the additional keys pressed by the player for moving/changing the state of the player object
+	// moving direction
 	if (_inputManager.isKeyDown(SDLK_w)){
-		//_camera[_currentCamara].move(0);
 		deltaPos.x -= 1;
 	}
 	if (_inputManager.isKeyDown(SDLK_s)){
@@ -413,27 +371,33 @@ void Game::ExecutePlayerCommands() {
 	if (_inputManager.isKeyDown(SDLK_a)){
 		deltaPos.y -= 1;
 	}
+	// jump
 	if (_inputManager.isKeyPressed(SDLK_SPACE)){
 		player->changeAcceleration();
 	}
 	if (_inputManager.isKeyPressed(SDL_BUTTON_LEFT)) {
+		// remove a cube
 		if (w->removeCube(player->getPosition(), player->getDirection())) {
+			// on success update vbo
 			vbo = std::vector<Vertex>(0);
 			w->generator(vbo);
 			_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
 		}
 	}
 	if (_inputManager.isKeyPressed(SDL_BUTTON_RIGHT)) {
+		// place a cube
 		if (w->putCube(player->getPosition(), player->getDirection(), player->getCubeType())) {
+			// on success update vbo
 			vbo = std::vector<Vertex>(0);
 			w->generator(vbo);
 			_openGLBuffers.sendDataToGPU(&vbo[0], vbo.size());
 		}
 	}
+	// if the player is pressing moving keys move the player
 	if (deltaPos.x != 0 || deltaPos.y != 0){
-		//deltaPos = glm::normalize(deltaPos)*deltaT;
 		player->moveDeltas(deltaPos.x, deltaPos.y, w);
 	}
+	// update player z position
 	player->addGravity(w);
 }
 

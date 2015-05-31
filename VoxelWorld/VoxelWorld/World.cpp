@@ -5,6 +5,7 @@ World::World(){
 	width = 100;
 	height =100;
 	depth = 100;
+	// storage matrix
 	cubs = std::vector<uint8_t>(width*height*depth, 0);
 	index = std::vector<int>(width*height*depth * 6, -1);
 	// do corners
@@ -12,18 +13,23 @@ World::World(){
 	doPoint(width - 1,0, depth / 4 + (rand() % depth / 2));
 	doPoint(0, height - 1, depth / 4 + (rand() % depth / 2));
 	doPoint(width - 1, height - 1, depth / 4 + (rand() % depth / 2));
+	// do Borders
 	doLine(0, 0, width - 1, 0);
 	doLine(0, 0, 0, width - 1);
 	doLine(width - 1, 0, width - 1, height - 1);
 	doLine(0, height - 1, width - 1, height - 1);
+	// do world
 	doSquare(0, 0, width - 1, height - 1);
+	// set trees
 	for (int i = 0; i < width; ++i) {
 		int randx = rand()%width;
 		int randy = rand() % height;
 		int size = getSize(randx, randy);
+		// trunk
 		for (int z = size; z < size + 5 && z<depth; ++z) {
 			cubs[coord(randx, randy, z)] = 2;
 		}
+		// leaves
 		if (inside(randx, randy, size + 6)) cubs[coord(randx, randy, size + 6)] = 6;
 		if (inside(randx + 1, randy, size + 5)) cubs[coord(randx + 1, randy, size + 5)] = 6;
 		if (inside(randx - 1, randy, size + 5)) cubs[coord(randx - 1, randy, size + 5)] = 6;
@@ -32,12 +38,16 @@ World::World(){
 	}
 }
 
-
+/*
+	Destructor
+*/
 World::~World(){
 	cubs.clear();
 	index.clear();
 }
-
+/*
+	Fills with cubes x,y position to size height
+*/
 void World::doPoint(int x, int y, int size) {
 	for (int z = 0; z < size; ++z) {
 		if (z < size / 2) cubs[coord(x, y, z)] = 3;
@@ -45,37 +55,45 @@ void World::doPoint(int x, int y, int size) {
 	}
 }
 
+/*
+	Fills a line from x0,y0 to x1,y1 with cubes with random height depending on the initial positions height
+*/
 void World::doLine(int x0, int y0, int x1, int y1) {
 	int init = getSize(x0, y0);
 	int end = getSize(x1, y1);
+	// horitzontal
 	if (x0 == x1) {
 		int x = x0;
 		for (int y = y0+1; y < y1; ++y) {
 			int rando = rand() % 100;
 			int togo = y1 - y;
 			if (togo <= abs(end - init)) init += (end - init) / togo;
-			else if (rando<10) init -= 1;
-			else if (rando>90) init += 1;
-			if (init>depth - 10) init = depth - 10;
+			else if (rando<10) init -= 1; // go down
+			else if (rando>90) init += 1; // go up
+			if (init>depth - 10) init = depth - 10;// too high
 			doPoint(x, y, init);
 		}
 	}
+	// vertical
 	else if (y0 == y1) {
 		int y = y0;
 		for (int x = x0+1; x < x1; ++x) {
 			int rando = rand() % 100;
 			int togo = x1 - x;
 			if (togo <= abs(end - init)) init += (end - init) / togo;
-			else if (rando<10) init -= 1;
-			else if (rando>90) init += 1;
-			if (init>depth - 10) init = depth - 10;
+			else if (rando<10) init -= 1;// go down
+			else if (rando>90) init += 1;// go up
+			if (init>depth - 10) init = depth - 10; // too high
 			doPoint(x, y, init);
 		}
 	}
 	else {
-		std::cout << "WTF!!" << std::endl;
+		std::cout << "ERROR!!" << std::endl;
 	}
 }
+/*
+	Fills a square of terran with cubes, dividing it by 2 doing 1 horitzontal and 1 vertical live and recursively calling the 4 resulting squares from the division
+*/
 
 void World::doSquare(int x0, int y0, int x1, int y1) {
 	if (x1 - x0>1 && y1 - y0 > 1) {
@@ -97,7 +115,9 @@ void World::doSquare(int x0, int y0, int x1, int y1) {
 		doSquare(randx, randy, x1, y1);
 	}
 }
-
+/*
+	retruns how many cubes does a x,y position have
+*/
 int World::getSize(int x, int y) {
 	int z = 0;
 	while (z < depth && cubs[coord(x,y,z)]!=0) {
@@ -166,17 +186,18 @@ void World::generator(std::vector<Vertex> &vbo){
 		}
 	}
 }
-
+/* deprecated */
 void World::deleteVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex> &vbo){
 
 }
-
+/* deprecated */
 void World::insertVertex(unsigned x, unsigned y, unsigned z, std::vector<Vertex> &vbo){
 
 }
 
 //create de four vertex of the face
 //parameters: x ,y ,z positions; vertex buffer object; vector distance 
+// vertex have x,y,z,texID,r,g,b,a,u,v,nx,ny,nz
 void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 d, int id){
 	Vertex v;
 	x *= CUBESIZE;
@@ -297,7 +318,9 @@ void World::calcVertex(int x, int y, int z, std::vector<Vertex> &vbo, glm::vec3 
 		vbo.push_back(v);
 	}
 }
-
+/*
+	Checks if a rectanlge fits into the world
+*/
 bool World::fits(glm::vec3 min, glm::vec3 max){
 	min = min / CUBESIZE;
 	max = max / CUBESIZE;
@@ -310,7 +333,9 @@ bool World::fits(glm::vec3 min, glm::vec3 max){
 	}
 	return true;
 }
-
+/*
+	checks if a position fits into the world
+*/
 bool World::fits2(glm::vec3 pos) {
 	pos = pos / CUBESIZE;
 	pos.x = floor(pos.x);
@@ -320,6 +345,9 @@ bool World::fits2(glm::vec3 pos) {
 	if (inside(pos.x, pos.y, pos.z-1) && cubs[coord(pos.x, pos.y, pos.z-1)] != 0) return false;
 	return true;
 }
+/*
+checks if a position fits into the world
+*/
 bool World::fits3(glm::vec3 pos) {
 	pos = pos / CUBESIZE;
 	pos.x = floor(pos.x);
@@ -329,24 +357,30 @@ bool World::fits3(glm::vec3 pos) {
 	if (inside(pos.x, pos.y, pos.z - 1) && cubs[coord(pos.x, pos.y, pos.z - 1)] != 0) return false;
 	return true;
 }
-
+/*
+	Try to remove the cubre resulting from a player in position looking in direction, returns true if suceed
+*/
 bool World::removeCube(glm::vec3 position, glm::vec3 direction) {
 	//cubs[coord(v.x, v.y, v.z)] = 0;
 	glm::vec3 cpos;
 	int face;
 	raycast(5, position, direction, cpos, face);
+	// if the raycast suceeded remove the cube
 	if (face != -1){
 		cubs[coord(cpos.x, cpos.y, cpos.z)] = 0;
 		return true;
 	}
 	return false;
 }
-
+/*
+Try to place a cube resulting from a player in position looking in direction, returns true if suceed
+*/
 bool World::putCube(glm::vec3 position, glm::vec3 direction, int cubeTipe){
 	//cubs[coord(v.x, v.y, v.z)] = 1;
 	glm::vec3 cpos;
 	int face;
 	raycast(5, position, direction, cpos, face);
+	// if the raycast succeded and the face of collision is empty place the new cube
 	if (face != -1){
 		cpos += axis[face];
 		if (inside(cpos.x, cpos.y, cpos.z) && cubs[coord(cpos.x, cpos.y, cpos.z)] == 0) {
@@ -356,11 +390,15 @@ bool World::putCube(glm::vec3 position, glm::vec3 direction, int cubeTipe){
 	}
 	return false;
 }
-
+/*
+	Gets the cubeID from a position
+*/
 int World::cubeTipe(glm::vec3 v){ 
 	return cubs[coord(v.x, v.y, v.z)]; 
 }
-
+/*
+	Converts a world coordinate into local matrix position
+*/
 glm::vec3 World::pointToGrid(glm::vec3 position){
 	glm::vec3 v;
 	v.x = floor(position.x/CUBESIZE);
@@ -368,10 +406,17 @@ glm::vec3 World::pointToGrid(glm::vec3 position){
 	v.z = floor(position.z/CUBESIZE);
 	return v;
 }
+/*
+	Emits a ray collinging with cubes until maxDist is reached, starting in position with the direction direction
 
+	Returns:
+		colisionPos point of the collision (x,y,z) 
+		face 0-5 depending on the cube face that recieved the collision
+*/
 void World::raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm::vec3 &colisonPos, int &face){
 	glm::vec3 currentPosition = position/ CUBESIZE;
 	direction *= -1.0f;
+	// white we didnt reach maxDist
 	while (glm::length(currentPosition - position/CUBESIZE) < maxDist){
 		std::cout << " operative. currentPositon = " <<  currentPosition.x << " , " << currentPosition.y << " , " << currentPosition.z << std::endl;
 		glm::vec3 t = { 0, 0, 0 };
@@ -384,6 +429,7 @@ void World::raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm:
 		//
 		if (direction.z > 0) t.z = (ceil(currentPosition.z) - currentPosition.z) ;
 		else t.z = (floor(currentPosition.z) - currentPosition.z);
+		// check the closest collision non 0
 		if (direction.x!=0) t.x = t.x / direction.x;
 		if (direction.y != 0) t.y = t.y / direction.y;
 		if (direction.z != 0) t.z = t.z / direction.z;
@@ -402,6 +448,7 @@ void World::raycast(float maxDist, glm::vec3 position, glm::vec3 direction, glm:
 			if (direction.z < 0) face = 4;
 			else face = 5;
 		}
+		// if the collision is valid stop the loop
 		if (inside(floor(currentPosition.x), floor(currentPosition.y), floor(currentPosition.z)) && cubs[coord(floor(currentPosition.x), floor(currentPosition.y), floor(currentPosition.z))] != 0) {
 			colisonPos = { floor(currentPosition.x), floor(currentPosition.y), floor(currentPosition.z) };
 			return;
